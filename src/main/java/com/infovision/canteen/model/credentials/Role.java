@@ -1,4 +1,4 @@
-package com.infovision.canteen.model.Credentials;
+package com.infovision.canteen.model.credentials;
 
 public enum Role {
 
