@@ -5,18 +5,23 @@ import java.util.UUID;
 
 import com.infovision.canteen.dto.admin.AdminDto;
 import com.infovision.canteen.dto.credentials.CredentialsDto;
-import com.infovision.canteen.dto.employee.EmployeeDto;
+import com.infovision.canteen.model.credentials.Credentials;
 import com.infovision.canteen.model.employee.Employee;
 
 public interface AdminService {
 
 	AdminDto addAdmin(AdminDto adminDto);
 
-	AdminDto editAdmin(AdminDto adminDto,UUID id);
+	AdminDto editAdmin(AdminDto adminDto, UUID id);
 
+	List<Employee> getEmployeeList() throws Exception;
 
-		List<Employee> getEmployeeList() throws Exception;
+	CredentialsDto addCredentials(CredentialsDto credentialsDto) throws Exception;
 
-		CredentialsDto addCredentials(CredentialsDto credentialsDto) throws Exception;
+	CredentialsDto editCredentials(CredentialsDto credentialsDto, UUID id) throws Exception;
+
+	List<Credentials> getCredentialList() throws Exception;
+
+	String deleteCredentials(String userName) throws Exception;
 
 }
