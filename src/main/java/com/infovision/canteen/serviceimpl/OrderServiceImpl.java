@@ -152,13 +152,13 @@ public class OrderServiceImpl implements OrderService {
 	public List<Orders> topSellingOrders() throws OrderException {
 		// TODO Auto-generated method stub
 		
-		List<Orders> orders=orderRepository.getByDate(LocalDate.now());
+//		List<Orders> orders=orderRepository.getByDate(LocalDate.now());
+//		
+//		if(orders.isEmpty())
+//			throw new OrderException("Orders not found today");
+//		
 		
-		if(orders.isEmpty())
-			throw new OrderException("Orders not found today");
-		
-		
-		return orders;
+		return null;
 	}
 
 }

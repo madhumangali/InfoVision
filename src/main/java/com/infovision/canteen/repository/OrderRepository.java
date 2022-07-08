@@ -17,10 +17,10 @@ public interface OrderRepository extends JpaRepository<Orders, UUID>{
 	@Query("select s from Orders s where s.employee.empId=:empId")
 	List<Orders> getByEmployee(UUID empId);
 
-	@Query("select s from Orders s where s.restaurantItem.restaurant.restaurantid=:restId")
-	List<Orders> getByRestaurant(UUID restId);
+//	@Query("select s from Orders s where s.restaurantItem.restaurant.restaurantid=:restId")
+//	List<Orders> getByRestaurant(UUID restId);
 
-	@Query("SELECT s.cart,COUNT(s.cart.restaurantItem.itemId) from Orders s GROUP BY s.cart.restaurantItem.itemId where s.date=:date")
-	List<Orders> getByDate(LocalDate date);
+//	@Query("SELECT s.cart,COUNT(s.cart.restaurantItem.itemId) from Orders s GROUP BY s.cart.restaurantItem.itemId where s.date=:date")
+//	List<Orders> getByDate(LocalDate date);
 
 }

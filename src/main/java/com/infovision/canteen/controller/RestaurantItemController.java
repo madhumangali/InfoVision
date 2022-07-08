@@ -64,7 +64,7 @@ public class RestaurantItemController {
 
 	}
 	
-	@RequestMapping(value = "/item", method =  RequestMethod.GET)
+	@RequestMapping(value = "/allitems", method =  RequestMethod.GET)
 	public ResponseEntity<?> getAllItems() {
 		ResponseEntity<?> response;
 
@@ -98,7 +98,7 @@ public class RestaurantItemController {
 
 	}
 	
-	@RequestMapping(value = "/item", method =  RequestMethod.GET)
+	@RequestMapping(value = "/restaurantitem", method =  RequestMethod.GET)
 	public ResponseEntity<?> getAllRestItems(@RequestParam UUID RestId) {
 		ResponseEntity<?> response;
 
@@ -132,7 +132,7 @@ public class RestaurantItemController {
 
 	}
 	
-	@RequestMapping(value = "/item", method =  RequestMethod.DELETE)
+	@RequestMapping(value = "/restaurantitem", method =  RequestMethod.DELETE)
 	public ResponseEntity<?> deleteRestItems(@RequestParam UUID RestId) {
 		ResponseEntity<?> response;
 
