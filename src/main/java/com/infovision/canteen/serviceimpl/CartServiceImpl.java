@@ -38,8 +38,7 @@ public class CartServiceImpl implements CartService {
 	@Autowired
 	private CartRepository cartRepository;
 	
-	@Autowired
-	private OrderCartItemRepository orderCartItemRepository;
+	
 
 	@Override
 	public String addToCart(UUID itemId, UUID empId, int quantity) throws CartException {
@@ -59,14 +58,7 @@ public class CartServiceImpl implements CartService {
 				cartItem.setQuantity(quantity);
 				cartItemRepository.save(cartItem);
 				
-				OrderCartItem orderCartItem = new OrderCartItem();
-
-				orderCartItem.setCart(employee.getCart());
-				orderCartItem.setRestaurantItem(restaurantItem);
-				orderCartItem.setAmount(quantity * restaurantItem.getItemprice());
-				orderCartItem.setQuantity(quantity);
 				
-				orderCartItemRepository.save(orderCartItem);
 
 			} else
 				throw new CartException("employee not found");

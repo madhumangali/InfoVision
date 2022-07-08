@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.infovision.canteen.dto.Order.OrderDto;
 import com.infovision.canteen.exception.OrderException;
+import com.infovision.canteen.model.cart.CartItem;
 import com.infovision.canteen.model.employee.Employee;
 import com.infovision.canteen.model.order.EmployeeOrderStatus;
+import com.infovision.canteen.model.order.OrderCartItem;
 import com.infovision.canteen.model.order.Orders;
+import com.infovision.canteen.model.order.TopSellingOrders;
 import com.infovision.canteen.model.payment.Mode;
 import com.infovision.canteen.model.payment.Payment;
 import com.infovision.canteen.model.restaurant.RestaurantItem;
@@ -21,9 +24,11 @@ import com.infovision.canteen.repository.CartItemRepository;
 import com.infovision.canteen.repository.CartRepository;
 import com.infovision.canteen.repository.EmployeeRepository;
 import com.infovision.canteen.repository.MenuItemRepository;
+import com.infovision.canteen.repository.OrderCartItemRepository;
 import com.infovision.canteen.repository.OrderRepository;
 import com.infovision.canteen.repository.PaymentRepository;
 import com.infovision.canteen.repository.RestaurantItemRepository;
+import com.infovision.canteen.repository.RestaurantRepository;
 import com.infovision.canteen.service.OrderService;
 
 @Service
@@ -34,15 +39,24 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private RestaurantItemRepository restaurantItemRepository;
+	
+	@Autowired
+	private RestaurantRepository restaurantRepository;
 
 	@Autowired
 	private CartRepository cartRepository;
+
+	@Autowired
+	private CartItemRepository cartItemRepository;
 
 	@Autowired
 	private PaymentRepository paymentRepository;
 	
 	@Autowired
 	private OrderRepository orderRepository;
+	
+	@Autowired
+	private OrderCartItemRepository orderCartItemRepository;
 	
 	@Override
 	public String orderItem(OrderDto orderDto) throws OrderException {
@@ -58,7 +72,26 @@ public class OrderServiceImpl implements OrderService {
 		if (cartRepository.existsById(orderDto.getCartId())) {
 			
 			if (employeeRepository.getOne(orderDto.getEmpId()).getCart().getCartId().equals(orderDto.getCartId()))
-				order.setCart(cartRepository.getOne(orderDto.getCartId()));
+			{
+				
+				List<CartItem> cartItems = cartItemRepository.findCartItems(orderDto.getCartId());
+				
+				for(CartItem cartItem: cartItems)
+				{
+					
+				OrderCartItem orderCartItem = new OrderCartItem();
+
+				orderCartItem.setCart(cartItem.getCart());
+				orderCartItem.setRestaurantItem(cartItem.getRestaurantItem());
+				orderCartItem.setAmount(cartItem.getAmount());
+				orderCartItem.setQuantity(cartItem.getQuantity());
+				orderCartItem.setOrder(order);
+				
+				orderCartItemRepository.save(orderCartItem);
+				
+				}
+				
+			}
 			else
 				throw new OrderException("Cart not belongs current Employee");
 			
@@ -80,6 +113,8 @@ public class OrderServiceImpl implements OrderService {
 		
 		order.setEmployeeOrderStatus(EmployeeOrderStatus.CONFIRM);
 		
+		orderRepository.save(order);
+		
 		return "Order Placed Successfully";
 	}
 
@@ -92,6 +127,8 @@ public class OrderServiceImpl implements OrderService {
 			Orders order=orderRepository.getOne(orderId);
 			
 			order.setEmployeeOrderStatus(EmployeeOrderStatus.CANCEL);
+			
+			orderRepository.save(order);
 		}
 		else
 			throw new OrderException("Order Not found");
@@ -100,12 +137,14 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<Orders> getEmpOrders(UUID empId) throws OrderException {
+	public List<OrderCartItem> getEmpOrders(UUID empId) throws OrderException {
 		// TODO Auto-generated method stub
 		
 		if(employeeRepository.existsById(empId))
 		{
-			List<Orders> orders=orderRepository.getByEmployee(empId);
+			Employee emp=employeeRepository.getOne(empId);
+			
+			List<OrderCartItem> orders=orderCartItemRepository.getByCart(emp.getCart().getCartId());
 			
 			if(orders.isEmpty())
 				throw new OrderException("Orders list is empty");
@@ -119,10 +158,10 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<Orders> getAllOrders() throws OrderException {
+	public List<OrderCartItem> getAllOrders() throws OrderException {
 		// TODO Auto-generated method stub
 		
-		List<Orders> orders=orderRepository.findAll();
+		List<OrderCartItem> orders=orderCartItemRepository.getAll(LocalDate.now());
 		
 		if(orders.isEmpty())
 			throw new OrderException("Orders list is empty");
@@ -132,11 +171,11 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<Orders> getRestaurantOrders(UUID restId) throws OrderException {
+	public List<OrderCartItem>  getRestaurantOrders(UUID restId) throws OrderException {
 		// TODO Auto-generated method stub
-		if(restaurantItemRepository.existsById(restId))
+		if(restaurantRepository.existsById(restId))
 		{
-			List<Orders> orders=orderRepository.getByRestaurant(restId);
+			List<OrderCartItem> orders=orderCartItemRepository.getByRestaurant(restId,LocalDate.now());
 			
 			if(orders.isEmpty())
 				throw new OrderException("Orders list is empty");
@@ -145,20 +184,19 @@ public class OrderServiceImpl implements OrderService {
 			
 		}
 		else
-			throw new OrderException("Employee Not found");
+			throw new OrderException("Restaurant Not found");
 	}
 
 	@Override
-	public List<Orders> topSellingOrders() throws OrderException {
+	public List<OrderCartItem> topSellingOrders() throws OrderException {
 		// TODO Auto-generated method stub
 		
-//		List<Orders> orders=orderRepository.getByDate(LocalDate.now());
-//		
-//		if(orders.isEmpty())
-//			throw new OrderException("Orders not found today");
-//		
+		List<OrderCartItem> orders=orderCartItemRepository.getTopOrders(LocalDate.now());
 		
-		return null;
+		if(orders.isEmpty())
+			throw new OrderException("Orders not found today");
+		
+		return orders;
 	}
 
 }

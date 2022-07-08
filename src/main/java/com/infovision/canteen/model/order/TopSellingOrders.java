@@ -25,23 +25,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderCartItem {
+public class TopSellingOrders {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID orderCartItemId;
+	private UUID orderId;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private Cart cart;
+	private RestaurantItem restItem;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	private RestaurantItem restaurantItem;
+	private int count;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	private Orders order;
-	
-	private int quantity;
-	
-	private double amount;
+	private LocalDate date;
 
 }
