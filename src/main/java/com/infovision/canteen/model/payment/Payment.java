@@ -9,10 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.infovision.canteen.model.employee.Employee;
-import com.infovision.canteen.model.feedback.Feedback;
-import com.infovision.canteen.model.feedback.Website;
-import com.infovision.canteen.model.restaurant.RestaurantItem;
+import com.infovision.canteen.model.restaurant.Restaurant;
+import com.infovision.canteen.model.restaurant.RestaurantProfile;
+import com.infovision.canteen.model.restaurant.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Payment {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID paymentId;
@@ -32,5 +31,4 @@ public class Payment {
 	
 	@Enumerated(EnumType.STRING)
 	private Mode mode;
-
 }

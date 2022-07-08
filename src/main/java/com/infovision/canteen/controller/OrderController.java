@@ -1,0 +1,137 @@
+//package com.infovision.canteen.controller;
+//
+//import java.util.UUID;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.CrossOrigin;
+//import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMethod;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import com.infovision.canteen.dto.Order.OrderDto;
+//import com.infovision.canteen.dto.restaurant.RestaurantProfileDto;
+//import com.infovision.canteen.exception.ErrorHandler;
+//import com.infovision.canteen.service.OrderService;
+//import com.infovision.canteen.service.RestaurantService;
+//
+//import lombok.extern.log4j.Log4j2;
+//
+//@RestController
+//@CrossOrigin("*")
+//@Log4j2
+//public class OrderController {
+//	
+//	@Autowired
+//	private OrderService orderService;
+//	
+//	@RequestMapping(value = "/order", method = RequestMethod.POST)
+//	public ResponseEntity<?> orderItem(@RequestBody OrderDto orderDto) throws Exception {
+//		
+//		ResponseEntity<?> response;
+//
+//		try {
+//			response = new ResponseEntity<>(orderService.orderItem(orderDto), HttpStatus.OK);
+//			log.info("new Order is Placed");
+//		} catch (Exception e) {
+//			response = new ResponseEntity<ErrorHandler>(
+//					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+//			 log.error("new Order is not Placed");
+//		}
+//
+//		return response;
+//	
+//	}
+//	
+//	@RequestMapping(value = "/order", method = RequestMethod.PUT)
+//	public ResponseEntity<?> cancelOrderItem(@RequestBody UUID orderId) throws Exception {
+//		
+//		ResponseEntity<?> response;
+//
+//		try {
+//			response = new ResponseEntity<>(orderService.cancelOrderItem(orderId), HttpStatus.OK);
+//			log.info(" Order is cancelled");
+//		} catch (Exception e) {
+//			response = new ResponseEntity<ErrorHandler>(
+//					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+//			 log.error("new Order is not cancelled");
+//		}
+//
+//		return response;
+//	
+//	}
+//
+//	@RequestMapping(value = "/order", method = RequestMethod.GET)
+//	public ResponseEntity<?> getEmpOrders(@RequestBody UUID empId) throws Exception {
+//		
+//		ResponseEntity<?> response;
+//
+//		try {
+//			response = new ResponseEntity<>(orderService.getEmpOrders(empId), HttpStatus.OK);
+//			log.info(" Order is cancelled");
+//		} catch (Exception e) {
+//			response = new ResponseEntity<ErrorHandler>(
+//					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+//			 log.error("new Order is not cancelled");
+//		}
+//
+//		return response;
+//	
+//	}
+//	
+//	@RequestMapping(value = "/order", method = RequestMethod.GET)
+//	public ResponseEntity<?> getAllOrders() throws Exception {
+//		
+//		ResponseEntity<?> response;
+//
+//		try {
+//			response = new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
+//			log.info(" Order is cancelled");
+//		} catch (Exception e) {
+//			response = new ResponseEntity<ErrorHandler>(
+//					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+//			 log.error("new Order is not cancelled");
+//		}
+//
+//		return response;
+//	
+//	}
+//	
+//	@RequestMapping(value = "/restaurantorders", method = RequestMethod.GET)
+//	public ResponseEntity<?> getRestaurantOrders(@RequestBody UUID restId) throws Exception {
+//		
+//		ResponseEntity<?> response;
+//
+//		try {
+//			response = new ResponseEntity<>(orderService.getRestaurantOrders(restId), HttpStatus.OK);
+//			log.info(" Order is cancelled");
+//		} catch (Exception e) {
+//			response = new ResponseEntity<ErrorHandler>(
+//					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+//			 log.error("new Order is not cancelled");
+//		}
+//
+//		return response;
+//	
+//	}
+//	
+//	@RequestMapping(value = "/topsellingorders", method = RequestMethod.GET)
+//	public ResponseEntity<?> topSellingOrders() throws Exception {
+//		
+//		ResponseEntity<?> response;
+//
+//		try {
+//			response = new ResponseEntity<>(orderService.topSellingOrders(), HttpStatus.OK);
+//			log.info(" Order is cancelled");
+//		} catch (Exception e) {
+//			response = new ResponseEntity<ErrorHandler>(
+//					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+//			 log.error("new Order is not cancelled");
+//		}
+//
+//		return response;
+//	
+//	}
+//}

@@ -15,4 +15,8 @@ public interface RestaurantItemRepository extends JpaRepository<RestaurantItem, 
 	@Query("select s from RestaurantItem s where s.restaurant.restaurantid=:restaurantid")
 	List<RestaurantItem> findByRestaurant(UUID restaurantid);
 
+
+	@Query("select s from RestaurantItem s where s.restaurant.restaurantid=:restId AND s.itemName=:itemName" )
+	RestaurantItem getRestItem(UUID restId,String itemName);
+
 }

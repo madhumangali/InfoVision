@@ -23,4 +23,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, UUID> {
 	@Query("select s from RestaurantItem s where s.restaurant.restaurantProfile.restaurantName=:restName AND s.itemName=:itemName" )
 	RestaurantItem findRestItem(String itemName, String restName);
 
+
+
 }

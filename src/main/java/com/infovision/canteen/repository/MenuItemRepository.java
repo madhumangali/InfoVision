@@ -17,4 +17,5 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, UUID>{
 	@Query("select s from MenuItem s where s.admin.id=:id")
 	List<MenuItem> getByAdmin(UUID id);
 
+
 }

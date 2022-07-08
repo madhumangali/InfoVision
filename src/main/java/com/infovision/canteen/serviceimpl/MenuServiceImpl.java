@@ -2,11 +2,13 @@ package com.infovision.canteen.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.infovision.canteen.dto.admin.EditMenuItemDto;
 import com.infovision.canteen.dto.admin.MenuItemDto;
 import com.infovision.canteen.exception.MenuItemException;
 import com.infovision.canteen.model.admin.Admin;
@@ -50,6 +52,78 @@ public class MenuServiceImpl implements MenuService{
 			throw new MenuItemException("Admin details not found");
 		
 		return menuItemDtos;
+	}
+
+	@Override
+	public MenuItem editMenuItem(EditMenuItemDto editMenuItemDto, UUID adminId) throws MenuItemException {
+		// TODO Auto-generated method stub
+		
+		
+		if(adminRepository.existsById(adminId))
+		{
+			
+			if(menuItemRepositroy.existsById(editMenuItemDto.getId()))
+			{
+				
+			MenuItem menuItem=menuItemRepositroy.getOne(editMenuItemDto.getId());
+			
+			menuItem.setFoodType(editMenuItemDto.getFoodType());
+			menuItem.setImageUrl(editMenuItemDto.getImageUrl());
+			menuItem.setItemName(editMenuItemDto.getItemName());
+			
+			menuItemRepositroy.save(menuItem);
+			
+			return menuItem;
+			
+			}
+			else
+				throw new MenuItemException("MenuItem is not found");
+			
+		}
+		else
+			throw new MenuItemException("Admin  not found");
+		
+		
+	}
+
+	@Override
+	public List<MenuItem> viewMenuItems(UUID adminId) throws MenuItemException {
+		// TODO Auto-generated method stub
+		
+		List<MenuItem> menuItems=menuItemRepositroy.getByAdmin(adminId);
+		
+		if(menuItems.isEmpty())
+			throw new MenuItemException("MenuItems List are empty,pls add");
+		
+		return menuItems;
+	}
+
+	@Override
+	public String deleteMenuItem(UUID adminId, UUID menuItemId) throws MenuItemException {
+		// TODO Auto-generated method stub
+		
+		if(adminRepository.existsById(adminId))
+		{
+			
+		List<MenuItem> menuItems=menuItemRepositroy.getByAdmin(adminId);
+		
+		if(menuItems.isEmpty())
+			throw new MenuItemException("MenuItems List are empty,pls add");
+		
+		for(MenuItem menuItem: menuItems)
+		{
+			if(menuItem.getItemId().equals(menuItemId))
+			{
+				menuItemRepositroy.delete(menuItem);
+				return "MenuItem is Deleted";
+			}
+		}
+		
+		}
+		else
+			throw new MenuItemException("Admin Not found");
+		
+		return "MenuItem is not found";
 	}
 
 }

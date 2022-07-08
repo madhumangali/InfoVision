@@ -29,7 +29,7 @@ public class RestaurantItemController {
 	private RestaurantItemService restaurantItemService;
 	
 	
-	@RequestMapping(value = "/additem", method =  RequestMethod.POST)
+	@RequestMapping(value = "/item", method =  RequestMethod.POST)
 	public ResponseEntity<?> addItem(@RequestBody List<RestaurantItemDto> restaurantItemDtos,@RequestParam UUID RestId) {
 
 		ResponseEntity<?> response;
@@ -47,7 +47,7 @@ public class RestaurantItemController {
 
 	}
 	
-	@RequestMapping(value = "/edititem", method =  RequestMethod.PUT)
+	@RequestMapping(value = "/item", method =  RequestMethod.PUT)
 	public ResponseEntity<?> editItem(@RequestParam List<UUID> ids,List<RestaurantItemDto> restaurantItemDtos) {
 		ResponseEntity<?> response;
 
@@ -64,4 +64,88 @@ public class RestaurantItemController {
 
 	}
 	
+	@RequestMapping(value = "/item", method =  RequestMethod.GET)
+	public ResponseEntity<?> getAllItems() {
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantItemService.getAllItems(), HttpStatus.OK);
+			    log.info("new Restaurant is added");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("new Restaurant is not added");
+		}
+
+		return response;
+
+	}
+	
+	@RequestMapping(value = "/item", method =  RequestMethod.GET)
+	public ResponseEntity<?> getItem(@RequestParam UUID RestId,@RequestParam String itemName) {
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantItemService.getItem(RestId,itemName), HttpStatus.OK);
+			    log.info("new Restaurant is added");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("new Restaurant is not added");
+		}
+
+		return response;
+
+	}
+	
+	@RequestMapping(value = "/item", method =  RequestMethod.GET)
+	public ResponseEntity<?> getAllRestItems(@RequestParam UUID RestId) {
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantItemService.getAllRestItems(RestId), HttpStatus.OK);
+			    log.info("new Restaurant is added");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("new Restaurant is not added");
+		}
+
+		return response;
+
+	}
+	
+	@RequestMapping(value = "/item", method =  RequestMethod.DELETE)
+	public ResponseEntity<?> deleteItem(@RequestParam UUID RestId,@RequestParam String  itemName) {
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantItemService.deleteItem(RestId,itemName), HttpStatus.OK);
+			    log.info("new Restaurant is added");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("new Restaurant is not added");
+		}
+
+		return response;
+
+	}
+	
+	@RequestMapping(value = "/item", method =  RequestMethod.DELETE)
+	public ResponseEntity<?> deleteRestItems(@RequestParam UUID RestId) {
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantItemService.deleteRestItems(RestId), HttpStatus.OK);
+			    log.info("new Restaurant is added");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("new Restaurant is not added");
+		}
+
+		return response;
+
+	}
 }

@@ -84,4 +84,107 @@ public class RestaurantItemServiceImpl implements RestaurantItemService {
 		return null;
 	}
 
+	@Override
+	public List<RestaurantItem> getAllItems() throws RestaurantItemException {
+		// TODO Auto-generated method stub
+		
+		List<RestaurantItem> restaurantItems=restaurantItemRepository.findAll();
+		
+		if(restaurantItems.isEmpty())
+			throw new RestaurantItemException("ResturantItems are empty,pls add");
+		
+		return restaurantItems;
+	}
+
+	@Override
+	public RestaurantItem getItem(UUID restId,String itemName) throws RestaurantItemException {
+		// TODO Auto-generated method stub
+		
+		if(restaurantRepository.existsById(restId))
+		{
+		RestaurantItem restaurantItem=restaurantItemRepository.getRestItem(restId,itemName);
+		
+		if(restaurantItem == null)
+			throw new RestaurantItemException("Restaurant Item not found");
+		
+		return restaurantItem;
+		
+		}
+		else
+			throw new RestaurantItemException("Restaurant not found");
+		
+	}
+
+	@Override
+	public List<RestaurantItem> getAllRestItems(UUID restId) throws RestaurantItemException {
+		// TODO Auto-generated method stub
+		if(restaurantRepository.existsById(restId))
+		{
+			
+		List<RestaurantItem> restaurantItems=restaurantItemRepository.findByRestaurant(restId);
+		
+		if(restaurantItems.isEmpty())
+			throw new RestaurantItemException("ResturantItems are empty,pls add");
+		
+		return restaurantItems;
+		}
+		else
+			throw new RestaurantItemException("Restaurant not found");
+
+	}
+
+	@Override
+	public String deleteItem(UUID restId, String itemName) throws RestaurantItemException {
+		// TODO Auto-generated method stub
+		
+		if(restaurantRepository.existsById(restId))
+		{
+			
+		List<RestaurantItem> restaurantItems=restaurantItemRepository.findByRestaurant(restId);
+		
+		if(restaurantItems.isEmpty())
+			throw new RestaurantItemException("ResturantItems are empty,pls add");
+		
+		for(RestaurantItem restaurantItem: restaurantItems)
+		{
+			
+			if(restaurantItem.getItemName().equals(itemName))
+			{
+				restaurantItemRepository.delete(restaurantItem);
+				return "Item is deleted";
+			}
+		}
+		
+		 throw new RestaurantItemException("RestaurantItem is not found");
+		 
+		}
+		else
+			throw new RestaurantItemException("Restaurant not found");
+	
+	}
+
+	@Override
+	public String deleteRestItems(UUID restId) throws RestaurantItemException {
+		// TODO Auto-generated method stub
+		
+		if(restaurantRepository.existsById(restId))
+		{
+			
+		List<RestaurantItem> restaurantItems=restaurantItemRepository.findByRestaurant(restId);
+		
+		if(restaurantItems.isEmpty())
+			throw new RestaurantItemException("ResturantItems are empty,pls add");
+		
+				restaurantItemRepository.deleteAll();
+				
+				return "Items are deleted";
+		 
+		}
+		else
+			throw new RestaurantItemException("Restaurant not found");
+
+	}
+	
+	
+
 }

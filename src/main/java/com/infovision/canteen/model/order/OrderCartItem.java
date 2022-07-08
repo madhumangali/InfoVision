@@ -6,8 +6,6 @@ import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +14,6 @@ import javax.persistence.OneToOne;
 import com.infovision.canteen.model.cart.Cart;
 import com.infovision.canteen.model.delivery.Delivery;
 import com.infovision.canteen.model.employee.Employee;
-import com.infovision.canteen.model.payment.Mode;
 import com.infovision.canteen.model.payment.Payment;
 import com.infovision.canteen.model.restaurant.RestaurantItem;
 
@@ -28,35 +25,20 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Orders {
-
+public class OrderCartItem {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID orderId;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	private Employee employee;
+	private UUID orderCartItemId;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Cart cart;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private Payment payment;
+	private RestaurantItem restaurantItem;
 	
-	@Enumerated(EnumType.STRING)
-	private EmployeeOrderStatus employeeOrderStatus;
+	private int quantity;
 	
-	@Enumerated(EnumType.STRING)
-	private OrderStatus RestaurantOrderStatus;
-	
-	@Enumerated(EnumType.STRING)
-	private OrderStatus DeliveryOrderStatus;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	private Delivery delivery;
-	
-	private LocalDate date;
-	
-	private LocalTime time;
-	
+	private double amount;
+
 }

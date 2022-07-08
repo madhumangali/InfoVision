@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.infovision.canteen.dto.restaurant.RestaurantProfileDto;
 import com.infovision.canteen.exception.ErrorHandler;
+import com.infovision.canteen.model.restaurant.Status;
 import com.infovision.canteen.service.RestaurantService;
 //import com.infovision.canteen.serviceimpl.JwtUserDetailsService;
 
@@ -57,11 +58,101 @@ public class RestaurantController {
 
 		try {
 			response = new ResponseEntity<>(restaurantService.editRestaurant(restaurantProfileDto,id), HttpStatus.OK);
-			    log.info("admin details are edited");
+			    log.info("Restaurant details are edited");
 		} catch (Exception e) {
 			response = new ResponseEntity<ErrorHandler>(
 					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
-			 log.error("admin details are not edited");
+			 log.error("Restaurant details are not edited");
+		}
+
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/registerforrestaurant", method = RequestMethod.GET)
+	public ResponseEntity<?> viewRestaurant(@RequestParam String restaurantName) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantService.viewRestaurant(restaurantName), HttpStatus.OK);
+			    log.info("Restaurant details are Viewed");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Restaurant details are not Viewed");
+		}
+
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/registerforrestaurant", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteRestaurant(@RequestParam String restaurantName) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantService.deleteRestaurant(restaurantName), HttpStatus.OK);
+			    log.info("Restaurant details are deleted");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Restaurant details are not deleted");
+		}
+
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/allrestaurants", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllRestaurants() throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantService.getAllRestaurants(), HttpStatus.OK);
+			    log.info("Restaurants List found");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Restaurants List not found");
+		}
+
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/restaurantstatus", method = RequestMethod.PUT)
+	public ResponseEntity<?> restaurantstatus(@RequestParam Status status,@RequestParam String restaurantName) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantService.restaurantstatus(status,restaurantName), HttpStatus.OK);
+			    log.info("Restaurant Status changed");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Restaurant Status not changed");
+		}
+
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/restaurantstatus", method = RequestMethod.GET)
+	public ResponseEntity<?> restaurantstatus(@RequestParam String restaurantName) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantService.restaurantstatus(restaurantName), HttpStatus.OK);
+			    log.info("Restaurant Status changed");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Restaurant Status not changed");
 		}
 
 		return response;

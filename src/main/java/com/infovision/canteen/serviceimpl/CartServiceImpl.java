@@ -14,10 +14,12 @@ import com.infovision.canteen.dto.cart.ViewItemDto;
 import com.infovision.canteen.exception.CartException;
 import com.infovision.canteen.model.cart.CartItem;
 import com.infovision.canteen.model.employee.Employee;
+import com.infovision.canteen.model.order.OrderCartItem;
 import com.infovision.canteen.model.restaurant.RestaurantItem;
 import com.infovision.canteen.repository.CartItemRepository;
 import com.infovision.canteen.repository.CartRepository;
 import com.infovision.canteen.repository.EmployeeRepository;
+import com.infovision.canteen.repository.OrderCartItemRepository;
 import com.infovision.canteen.repository.RestaurantItemRepository;
 import com.infovision.canteen.service.CartService;
 
@@ -35,6 +37,9 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private CartRepository cartRepository;
+	
+	@Autowired
+	private OrderCartItemRepository orderCartItemRepository;
 
 	@Override
 	public String addToCart(UUID itemId, UUID empId, int quantity) throws CartException {
@@ -53,6 +58,15 @@ public class CartServiceImpl implements CartService {
 				cartItem.setAmount(quantity * restaurantItem.getItemprice());
 				cartItem.setQuantity(quantity);
 				cartItemRepository.save(cartItem);
+				
+				OrderCartItem orderCartItem = new OrderCartItem();
+
+				orderCartItem.setCart(employee.getCart());
+				orderCartItem.setRestaurantItem(restaurantItem);
+				orderCartItem.setAmount(quantity * restaurantItem.getItemprice());
+				orderCartItem.setQuantity(quantity);
+				
+				orderCartItemRepository.save(orderCartItem);
 
 			} else
 				throw new CartException("employee not found");
@@ -68,34 +82,8 @@ public class CartServiceImpl implements CartService {
 
 		CartItemDto cartItemDto = new CartItemDto();
 
-//		List<ViewItemDto> RestaurantItemDtos = new ArrayList();
-//
-//		double total = 0;
-
 		List<CartItem> cartItems = cartItemRepository.findCartItems(cartId);
 
-//		for (CartItem CartItem : cartItems) {
-//			
-//			ViewItemDto restaurantItemDto = new ViewItemDto();
-//
-//			restaurantItemDto.setItemId(CartItem.getRestaurantItem().getItemId());
-//			restaurantItemDto.setImageUrl(CartItem.getRestaurantItem().getImageUrl());
-//			restaurantItemDto.setItemDesc(CartItem.getRestaurantItem().getItemDesc());
-//			restaurantItemDto.setAmount(CartItem.getAmount());
-//			restaurantItemDto.setItemName(CartItem.getRestaurantItem().getItemName());
-//			restaurantItemDto.setRating(CartItem.getRestaurantItem().getRating());
-//			restaurantItemDto.setRestaurant(CartItem.getRestaurantItem().getRestaurant());
-//			restaurantItemDto.setStatus(CartItem.getRestaurantItem().getStatus());
-//
-//			RestaurantItemDtos.add(restaurantItemDto);
-//
-//			total += restaurantItemDto.getAmount();
-//
-//		}
-//		
-//		
-//		cartItemDto.setRestaurantItems(RestaurantItemDtos);
-//		cartItemDto.setTotal(total);
 
 		return cartItems;
 

@@ -67,4 +67,40 @@ public class AdminController {
 		return response;
 		
 	}
+	
+	@RequestMapping(value = "/registerforadmin", method = RequestMethod.GET)
+	public ResponseEntity<?> viewAdmin(@RequestParam  String email) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(adminService.viewAdmin(email), HttpStatus.OK);
+			    log.info("admin details are edited");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("admin details are not edited");
+		}
+
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/registerforadmin", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteAdmin(@RequestParam  String email) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(adminService.deleteAdmin(email), HttpStatus.OK);
+			    log.info("admin details are edited");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("admin details are not edited");
+		}
+
+		return response;
+		
+	}
 }

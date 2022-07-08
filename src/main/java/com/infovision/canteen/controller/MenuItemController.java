@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.infovision.canteen.dto.admin.AdminDto;
+import com.infovision.canteen.dto.admin.EditMenuItemDto;
 import com.infovision.canteen.dto.admin.MenuItemDto;
 import com.infovision.canteen.exception.ErrorHandler;
 import com.infovision.canteen.service.EmployeeService;
@@ -30,22 +31,76 @@ public class MenuItemController {
 	private MenuService menuService;
 	
 	
-	@RequestMapping(value = "/addmenuitems", method = RequestMethod.POST)
+	@RequestMapping(value = "/menuitems", method = RequestMethod.POST)
 	public ResponseEntity<?> addMenuItems(@RequestBody List<MenuItemDto> menuItemDtos,@RequestParam UUID adminId) throws Exception {
 		
 		ResponseEntity<?> response;
 
 		try {
 			response = new ResponseEntity<>(menuService.addMenuItems(menuItemDtos,adminId), HttpStatus.OK);
-			    log.info("new admin is added");
+			    log.info("Menu Items are added");
 		} catch (Exception e) {
 			response = new ResponseEntity<ErrorHandler>(
 					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
-			 log.error("new admin is not added");
+			 log.error("Menu Items are not added");
 		}
 
 		return response;
 		
 	}
 	
+	
+	@RequestMapping(value = "/menuitems", method = RequestMethod.PUT)
+	public ResponseEntity<?> editMenuItem(@RequestBody EditMenuItemDto editMenuItemDto,@RequestParam UUID adminId) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(menuService.editMenuItem(editMenuItemDto,adminId), HttpStatus.OK);
+			    log.info("Menu Item is edited");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Menu Item is not edited");
+		}
+
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/menuitems", method = RequestMethod.GET)
+	public ResponseEntity<?> viewMenuItems(@RequestParam UUID adminId) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(menuService.viewMenuItems(adminId), HttpStatus.OK);
+			    log.info("Menu Items are found");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Menu Items are not found");
+		}
+
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/menuitems", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteMenuItem(@RequestParam UUID adminId,@RequestParam UUID menuItemId) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(menuService.deleteMenuItem(adminId,menuItemId), HttpStatus.OK);
+			    log.info("Menu Items are found");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Menu Items are not found");
+		}
+
+		return response;
+		
+	}
 }

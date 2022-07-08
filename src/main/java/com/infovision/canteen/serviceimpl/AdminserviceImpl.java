@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.infovision.canteen.dto.admin.AdminDto;
+import com.infovision.canteen.exception.AdminException;
 import com.infovision.canteen.model.admin.Admin;
 import com.infovision.canteen.repository.AdminRepository;
 import com.infovision.canteen.service.AdminService;
@@ -60,6 +61,32 @@ public class AdminserviceImpl implements AdminService{
 		}
 		
 		return adminDto;
+	}
+
+	@Override
+	public Admin viewAdmin(String email) throws AdminException {
+		// TODO Auto-generated method stub
+		
+		Admin admin=adminRepository.findByEmail(email);
+		
+		if(admin ==null)
+			throw new AdminException("Admin Details not found");
+		
+		return admin;
+	}
+
+	@Override
+	public String deleteAdmin(String email) throws AdminException {
+		// TODO Auto-generated method stub
+		
+		Admin admin=adminRepository.findByEmail(email);
+		
+		if(admin ==null)
+			throw new AdminException("Admin Details not found");
+		
+		adminRepository.delete(admin);
+		
+		return "Admin Details are deleted";
 	}
 	
 
