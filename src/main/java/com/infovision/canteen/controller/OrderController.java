@@ -47,7 +47,7 @@ public class OrderController {
 	}
 	
 	@RequestMapping(value = "/order", method = RequestMethod.PUT)
-	public ResponseEntity<?> cancelOrderItem(@RequestBody UUID orderId) throws Exception {
+	public ResponseEntity<?> cancelOrderItem(@RequestParam UUID orderId) throws Exception {
 		
 		ResponseEntity<?> response;
 
