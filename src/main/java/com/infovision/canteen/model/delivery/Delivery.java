@@ -36,5 +36,7 @@ public class Delivery {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	private com.infovision.canteen.model.Credentials.Credentials Credentials;
 	
 }

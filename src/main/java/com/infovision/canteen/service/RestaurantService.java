@@ -28,4 +28,8 @@ public interface RestaurantService {
 
 	Status restaurantstatus(String restaurantName)throws RestaurantException;
 
+	List<Restaurant> getAllRestaurants(String location) throws RestaurantException;
+
+	String allRestaurantstatus(String location)throws RestaurantException;
+
 }

@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,6 +38,15 @@ public class OrderCartItem {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private RestaurantItem restaurantItem;
+	
+	@Enumerated(EnumType.STRING)
+	private OrderStatus RestaurantOrderStatus;
+	
+	@Enumerated(EnumType.STRING)
+	private OrderStatus DeliveryOrderStatus;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Delivery delivery;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Orders order;

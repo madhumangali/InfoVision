@@ -123,6 +123,25 @@ public class RestaurantController {
 		
 	}
 	
+	@RequestMapping(value = "/homepage", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllRestaurants(@RequestParam String location) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantService.getAllRestaurants(location), HttpStatus.OK);
+			    log.info("Restaurants List found");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Restaurants List not found");
+		}
+
+		return response;
+		
+	}
+	
+	
 	@RequestMapping(value = "/restaurantstatus", method = RequestMethod.PUT)
 	public ResponseEntity<?> restaurantstatus(@RequestParam Status status,@RequestParam String restaurantName) throws Exception {
 		
@@ -130,6 +149,26 @@ public class RestaurantController {
 
 		try {
 			response = new ResponseEntity<>(restaurantService.restaurantstatus(status,restaurantName), HttpStatus.OK);
+			    log.info("Restaurant Status changed");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Restaurant Status not changed");
+		}
+
+		return response;
+		
+	}
+	
+//	Setting All Restaurants Status as inactive
+	
+	@RequestMapping(value = "/allrestaurantstatus", method = RequestMethod.PUT)
+	public ResponseEntity<?> allRestaurantstatus(@RequestParam String location) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(restaurantService.allRestaurantstatus(location), HttpStatus.OK);
 			    log.info("Restaurant Status changed");
 		} catch (Exception e) {
 			response = new ResponseEntity<ErrorHandler>(
@@ -158,4 +197,6 @@ public class RestaurantController {
 		return response;
 		
 	}
+	
+
 }

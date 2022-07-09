@@ -43,12 +43,12 @@ public class FeedBackController {
 	}
 	
 	@RequestMapping(value = "/employeesfeedback", method = RequestMethod.GET)
-	public ResponseEntity<?> getEmpsFeedback() throws Exception {
+	public ResponseEntity<?> getWebisteFeedback() throws Exception {
 		
 		ResponseEntity<?> response;
 
 		try {
-			response = new ResponseEntity<>(feedbackService.getEmpsFeedback(), HttpStatus.OK);
+			response = new ResponseEntity<>(feedbackService.getWebisteFeedback(), HttpStatus.OK);
 			    log.info("Menu Items are found");
 		} catch (Exception e) {
 			response = new ResponseEntity<ErrorHandler>(

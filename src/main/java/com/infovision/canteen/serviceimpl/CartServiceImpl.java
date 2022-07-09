@@ -37,8 +37,6 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private CartRepository cartRepository;
-	
-	
 
 	@Override
 	public String addToCart(UUID itemId, UUID empId, int quantity) throws CartException {
@@ -50,15 +48,32 @@ public class CartServiceImpl implements CartService {
 				RestaurantItem restaurantItem = restaurantItemRepository.getOne(itemId);
 				Employee employee = employeeRepository.getOne(empId);
 
-				CartItem cartItem = new CartItem();
+				List<CartItem> cartItems = cartItemRepository.findByCartId(employee.getCart().getCartId());
 
-				cartItem.setCart(employee.getCart());
-				cartItem.setRestaurantItem(restaurantItem);
-				cartItem.setAmount(quantity * restaurantItem.getItemprice());
-				cartItem.setQuantity(quantity);
-				cartItemRepository.save(cartItem);
-				
-				
+				if (cartItems.isEmpty()) {
+					
+					addProductTocart(employee,restaurantItem,quantity);
+					
+				} else {
+					
+					int itemCount = 0, itemSize = cartItems.size();
+					
+					for (CartItem item : cartItems) 
+					{
+						
+						if (item.getRestaurantItem().getRestaurant().getRestaurantid()
+								.equals(restaurantItem.getRestaurant().getRestaurantid()))
+							itemCount++;
+
+					}
+					
+					if(itemCount==itemSize)
+					{
+						
+						addProductTocart(employee,restaurantItem,quantity);
+					}
+
+				}
 
 			} else
 				throw new CartException("employee not found");
@@ -68,6 +83,17 @@ public class CartServiceImpl implements CartService {
 		return "Item is added to cart";
 	}
 
+	public void addProductTocart(Employee employee,RestaurantItem restaurantItem,int quantity)
+	{
+		CartItem cartItem = new CartItem();
+
+		cartItem.setCart(employee.getCart());
+		cartItem.setRestaurantItem(restaurantItem);
+		cartItem.setAmount(quantity * restaurantItem.getItemprice());
+		cartItem.setQuantity(quantity);
+		cartItemRepository.save(cartItem);
+	}
+	
 	@Override
 	public List<CartItem> viewCartItems(UUID cartId) throws Exception {
 		// TODO Auto-generated method stub
@@ -75,7 +101,6 @@ public class CartServiceImpl implements CartService {
 		CartItemDto cartItemDto = new CartItemDto();
 
 		List<CartItem> cartItems = cartItemRepository.findCartItems(cartId);
-
 
 		return cartItems;
 
@@ -89,21 +114,21 @@ public class CartServiceImpl implements CartService {
 		List<ViewItemDto> RestaurantItemDtos = new ArrayList();
 
 		double total = 0;
-		
+
 		List<CartItem> cartItems = cartItemRepository.findCartItems(cartId);
-		
-		if(cartItems.isEmpty())
+
+		if (cartItems.isEmpty())
 			throw new Exception("Cart Id not found");
-		
+
 		for (CartItem cartItem : cartItems) {
-			
-			if (cartItem.getCart().getCartId().equals(cartId) && 
-					cartItem.getRestaurantItem().getItemId().equals(itemId)) {
+
+			if (cartItem.getCart().getCartId().equals(cartId)
+					&& cartItem.getRestaurantItem().getItemId().equals(itemId)) {
 				cartItem.setQuantity(quantity);
-				cartItem.setAmount(quantity*cartItem.getRestaurantItem().getItemprice());
+				cartItem.setAmount(quantity * cartItem.getRestaurantItem().getItemprice());
 				cartItemRepository.save(cartItem);
 			}
-			
+
 			ViewItemDto restaurantItemDto = new ViewItemDto();
 
 			restaurantItemDto.setImageUrl(cartItem.getRestaurantItem().getImageUrl());
@@ -122,7 +147,7 @@ public class CartServiceImpl implements CartService {
 
 		cartItemDto.setRestaurantItems(RestaurantItemDtos);
 		cartItemDto.setTotal(total);
-		
+
 		return cartItemDto;
 	}
 
@@ -131,22 +156,22 @@ public class CartServiceImpl implements CartService {
 	public String deleteCartItems(UUID itemId, UUID cartId) throws Exception {
 		// TODO Auto-generated method stub
 		List<CartItem> cartItems = cartItemRepository.findCartItems(cartId);
-		
-		if(cartItems.isEmpty())
+
+		if (cartItems.isEmpty())
 			throw new Exception("Cart Id not found");
-		
-		List<CartItem> cartItems1=new ArrayList<>();
-		
+
+		List<CartItem> cartItems1 = new ArrayList<>();
+
 		for (CartItem cartItem : cartItems) {
-			
-			if (cartItem.getCart().getCartId().equals(cartId) && 
-					cartItem.getRestaurantItem().getItemId().equals(itemId)) {
-				
+
+			if (cartItem.getCart().getCartId().equals(cartId)
+					&& cartItem.getRestaurantItem().getItemId().equals(itemId)) {
+
 				cartItemRepository.delete(cartItem.getCartItemId());
-				
+
 			}
 
-	}		
+		}
 		return "CartItem deleted from Cart";
 	}
 

@@ -1,5 +1,6 @@
 package com.infovision.canteen.serviceimpl;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +52,15 @@ public class FeedbackServiceImpl implements FeedbackService{
 	}
 
 	@Override
-	public Object getEmpsFeedback() throws FeedbackException {
+	public List<Feedback> getWebisteFeedback() throws FeedbackException {
 		// TODO Auto-generated method stub
 		
-		return null;
+		List<Feedback> feedbackList = feedbackRepository.findAllByName("INFO_EAT");
+		
+		if(feedbackList.isEmpty())
+			throw new FeedbackException("Feedback are empty");
+		
+		return feedbackList;
 	}
 
 }

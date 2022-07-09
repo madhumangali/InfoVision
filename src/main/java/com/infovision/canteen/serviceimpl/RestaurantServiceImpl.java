@@ -29,7 +29,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	@Autowired
 	private RestaurantItemRepository restaurantItemRepository;
-	
+
 	@Override
 	public RestaurantProfileDto addRestaurant(RestaurantProfileDto restaurantProfileDto)
 			throws RestaurantException, IOException {
@@ -113,52 +113,83 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 		if (restaurant == null)
 			throw new RestaurantException("Restaurant Details are not found");
-		
-		List<RestaurantItem> restaurantItems=restaurantItemRepository.findByRestaurant(restaurant.getRestaurantid());
-		
+
+		List<RestaurantItem> restaurantItems = restaurantItemRepository.findByRestaurant(restaurant.getRestaurantid());
+
 		restaurantItemRepository.deleteAll();
-				
+
 		restaurantRepository.delete(restaurant);
-		
+
 		return "Restaurant is deleted";
 	}
 
 	@Override
 	public List<Restaurant> getAllRestaurants() throws RestaurantException {
 		// TODO Auto-generated method stub
-		
-		List<Restaurant> restaurants=restaurantRepository.findAll();
-		
-		if(restaurants.isEmpty())
-		 throw new RestaurantException("Restaurants List is empty");
-			
+
+		List<Restaurant> restaurants = restaurantRepository.findAll();
+
+		if (restaurants.isEmpty())
+			throw new RestaurantException("Restaurants List is empty");
+
 		return restaurants;
 	}
 
 	@Override
 	public Restaurant restaurantstatus(Status status, String restaurantName) throws RestaurantException {
 		// TODO Auto-generated method stub
-		
+
 		Restaurant restaurant = restaurantRepository.findByName(restaurantName);
 
 		if (restaurant == null)
 			throw new RestaurantException("Restaurant Details are not found");
-		
+
 		restaurant.setRestaurantStatus(status);
-		
+
 		return restaurant;
 	}
 
 	@Override
 	public Status restaurantstatus(String restaurantName) throws RestaurantException {
 		// TODO Auto-generated method stub
-		
+
 		Restaurant restaurant = restaurantRepository.findByName(restaurantName);
-		
+
 		if (restaurant == null)
 			throw new RestaurantException("Restaurant Details are not found");
-		
+
 		return restaurant.getRestaurantStatus();
+	}
+
+	@Override
+	public List<Restaurant> getAllRestaurants(String location) throws RestaurantException {
+		// TODO Auto-generated method stub
+		List<Restaurant> restaurants = restaurantRepository.findByLocation(location);
+
+		if (restaurants.isEmpty())
+			throw new RestaurantException("Restaurants List is empty");
+
+		return restaurants;
+	}
+
+	@Override
+	public String allRestaurantstatus(String location) throws RestaurantException {
+		// TODO Auto-generated method stub
+
+		List<Restaurant> restaurants = restaurantRepository.findByLocation(location);
+
+		if (restaurants.isEmpty())
+			throw new RestaurantException("Restaurants List is empty");
+
+		
+		for(Restaurant restaurant:restaurants)
+		{
+			restaurant.setRestaurantStatus(Status.INACTIVE);
+			restaurantRepository.save(restaurant);
+			
+		}
+		
+		return "All Restaurants Status are setted as Inactive";
 	}
 
 }

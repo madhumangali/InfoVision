@@ -10,7 +10,7 @@ import com.infovision.canteen.model.order.Orders;
 
 public interface OrderService {
 
-	String orderItem(OrderDto orderDto) throws OrderException;
+	String orderItem(OrderDto orderDto) throws OrderException, Exception;
 
 	String cancelOrderItem(UUID orderId)throws OrderException;
 

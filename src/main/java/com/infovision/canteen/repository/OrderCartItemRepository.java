@@ -45,4 +45,7 @@ public interface OrderCartItemRepository extends JpaRepository<OrderCartItem, UU
 	@Query("select s from OrderCartItem s where MONTH(s.order.date)=:month AND YEAR(s.order.date)=:year AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
 	List<OrderCartItem> getMonthAllRestRevenue(@Param("month")Month month,@Param("year") int year);
 
+	@Query("select s from OrderCartItem s where s.order.orderId=:orderId")
+	List<OrderCartItem> findByOrderId(UUID orderId);
+
 }

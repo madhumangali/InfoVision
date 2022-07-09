@@ -46,15 +46,6 @@ public class Orders {
 	@Enumerated(EnumType.STRING)
 	private EmployeeOrderStatus employeeOrderStatus;
 	
-	@Enumerated(EnumType.STRING)
-	private OrderStatus RestaurantOrderStatus;
-	
-	@Enumerated(EnumType.STRING)
-	private OrderStatus DeliveryOrderStatus;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	private Delivery delivery;
-	
 	private LocalDate date;
 	
 	private LocalTime time;
