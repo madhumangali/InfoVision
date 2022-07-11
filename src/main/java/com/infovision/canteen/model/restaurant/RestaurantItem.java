@@ -40,11 +40,6 @@ public class RestaurantItem {
 	private ItemStatus status;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private Restaurant restaurant;
-	
-	private double discount;
-	
-
-	
+	private Restaurant restaurant;	
 
 }

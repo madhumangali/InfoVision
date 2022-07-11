@@ -9,9 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.infovision.canteen.model.cart.Cart;
-import com.infovision.canteen.model.employee.Employee;
-import com.infovision.canteen.model.employee.Profile;
+import com.infovision.canteen.model.credentials.Credentials;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,16 +25,12 @@ public class Delivery {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID deliveryId;
 	
-	private String userName;
-	
-	private String password;
-	
 	private long mobileNumber;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private com.infovision.canteen.model.Credentials.Credentials Credentials;
+	private Credentials credentials;
 	
 }

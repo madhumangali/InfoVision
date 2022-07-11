@@ -1,7 +1,6 @@
 package com.infovision.canteen.serviceimpl;
 
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -9,18 +8,14 @@ import java.util.UUID;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties.Credential;
 import org.springframework.stereotype.Service;
 
 import com.infovision.canteen.dto.admin.AdminDto;
-<<<<<<< HEAD
-import com.infovision.canteen.exception.AdminException;
-=======
 import com.infovision.canteen.dto.credentials.CredentialsDto;
-import com.infovision.canteen.dto.employee.EmployeeDto;
->>>>>>> 9de4829f0dfbe6378cc2c3d4bc51037b69907b7a
+import com.infovision.canteen.exception.AdminException;
 import com.infovision.canteen.model.admin.Admin;
 import com.infovision.canteen.model.credentials.Credentials;
+import com.infovision.canteen.model.credentials.Role;
 import com.infovision.canteen.model.delivery.Delivery;
 import com.infovision.canteen.model.employee.Employee;
 import com.infovision.canteen.repository.AdminRepository;
@@ -88,7 +83,7 @@ public class AdminserviceImpl implements AdminService {
 
 		return adminDto;
 	}
-<<<<<<< HEAD
+
 
 	@Override
 	public Admin viewAdmin(String email) throws AdminException {
@@ -116,8 +111,6 @@ public class AdminserviceImpl implements AdminService {
 		return "Admin Details are deleted";
 	}
 	
-=======
->>>>>>> 9de4829f0dfbe6378cc2c3d4bc51037b69907b7a
 
 	@Override
 	public List<Employee> getEmployeeList() throws Exception {
@@ -138,21 +131,25 @@ public class AdminserviceImpl implements AdminService {
 
 		// Hashing the password
 		String encryptedpassword = credentialsDto.getPassword();
-		try {
-			encryptedpassword = hashPassword(credentialsDto.getPassword());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+	
 		Credentials credential = new Credentials();
+		
 		credential.setUserName(credentialsDto.getUserName());
 		credential.setRole(credentialsDto.getRole());
-
-//		credential.setPassword(encryptedpassword);
 		credential.setPassword(credentialsDto.getPassword());
 
 		credentialsRepository.save(credential);
-//		deliveryRepository.save(credential);
+		
+		if(credentialsDto.getRole().equals(Role.ROLE_DELIVERY))
+		{
+			Delivery delivery=new Delivery();
+			
+			delivery.setCredentials(credential);
+			
+			deliveryRepository.save(delivery);
+
+		}
+
 		return credentialsDto;
 
 	}
@@ -205,12 +202,5 @@ public class AdminserviceImpl implements AdminService {
 			}
 			return "deleted";
 			
-				
-			
-			
-		
-		
-		
-	
 	
 }}

@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.UUID;
 
 import com.infovision.canteen.dto.admin.AdminDto;
-<<<<<<< HEAD
+
 import com.infovision.canteen.exception.AdminException;
 import com.infovision.canteen.model.admin.Admin;
-=======
+
 import com.infovision.canteen.dto.credentials.CredentialsDto;
 import com.infovision.canteen.model.credentials.Credentials;
 import com.infovision.canteen.model.employee.Employee;
->>>>>>> 9de4829f0dfbe6378cc2c3d4bc51037b69907b7a
+
 
 public interface AdminService {
 
