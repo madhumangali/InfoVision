@@ -46,6 +46,7 @@ public class RestaurantItemServiceImpl implements RestaurantItemService {
 				restaurantItem.setRestaurant(restaurant);
 				restaurantItem.setStatus(ItemStatus.AVAILABLE);
 				restaurantItem.setImageUrl(restaurantItemDto.getImageUrl());
+				
 				restaurantItem.setRestaurant(restaurant);
 				restaurantItemRepository.save(restaurantItem);
 				ids.add(restaurantItem.getItemId());

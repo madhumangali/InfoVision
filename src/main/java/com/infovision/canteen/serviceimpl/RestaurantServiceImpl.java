@@ -176,7 +176,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 	}
 
 	@Override
-	public String allRestaurantstatus(String location) throws RestaurantException {
+	public String allRestaurantstatus(String location,Status status) throws RestaurantException {
 		// TODO Auto-generated method stub
 
 		List<Restaurant> restaurants = restaurantRepository.findByLocation(location);
@@ -187,12 +187,13 @@ public class RestaurantServiceImpl implements RestaurantService {
 		
 		for(Restaurant restaurant:restaurants)
 		{
-			restaurant.setRestaurantStatus(Status.INACTIVE);
+			restaurant.setRestaurantStatus(status);
 			restaurantRepository.save(restaurant);
 			
 		}
+		String s = "All Restaurants Status are setted as "+status;
 		
-		return "All Restaurants Status are setted as Inactive";
+		return s;
 	}
 	
 	

@@ -79,6 +79,8 @@ public class OrderServiceImpl implements OrderService {
 
 				List<CartItem> cartItems = cartItemRepository.findCartItems(orderDto.getCartId());
 
+				order.setCart(employeeRepository.getOne(orderDto.getEmpId()).getCart());
+				
 				for (CartItem cartItem : cartItems) {
 
 					OrderCartItem orderCartItem = new OrderCartItem();

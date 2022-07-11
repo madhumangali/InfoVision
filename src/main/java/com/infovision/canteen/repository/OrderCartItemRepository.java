@@ -19,7 +19,7 @@ import com.infovision.canteen.model.order.TopSellingOrders;
 @Repository
 public interface OrderCartItemRepository extends JpaRepository<OrderCartItem, UUID>{
 
-	@Query("select s from OrderCartItem s where s.cart.cartId=:cartId AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
+	@Query("select s from OrderCartItem s where s.cart.cartId=:cartId AND s.order.employeeOrderStatus = 'CONFIRM'")
 	List<OrderCartItem> getByCart(@Param("cartId") UUID cartId);
 
 	@Query("select s from OrderCartItem s where s.order.date=:now AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
@@ -38,7 +38,7 @@ public interface OrderCartItemRepository extends JpaRepository<OrderCartItem, UU
 	@Query("select s from OrderCartItem s where MONTH(s.order.date)=:month AND YEAR(s.order.date)=:year AND s.restaurantItem.restaurant.restaurantid=:restId AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
 	List<OrderCartItem> getyearRevenue(@Param("restId")UUID restId,@Param("month")Month month,@Param("year") int year);
 
-	@Query("select s from OrderCartItem s where s.order.date=:now AND s.order.employeeOrderStatus=:CONFIRM")
+	@Query("select s from OrderCartItem s where s.order.date=:now AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
 	List<OrderCartItem> getDayAllRestRevenue(@Param("now")LocalDate now);
 
 	@Query("select s from OrderCartItem s where s.order.date >=:minusDays AND s.order.employeeOrderStatus LIKE 'CONFIRM'")

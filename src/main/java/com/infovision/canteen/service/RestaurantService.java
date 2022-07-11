@@ -34,6 +34,6 @@ public interface RestaurantService {
 
 	List<Restaurant> getAllRestaurants(String location) throws RestaurantException;
 
-	String allRestaurantstatus(String location)throws RestaurantException;
+	String allRestaurantstatus(String location,Status status)throws RestaurantException;
 
 }

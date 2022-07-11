@@ -164,12 +164,12 @@ public class RestaurantController {
 //	Setting All Restaurants Status as inactive
 	
 	@RequestMapping(value = "/allrestaurantstatus", method = RequestMethod.PUT)
-	public ResponseEntity<?> allRestaurantstatus(@RequestParam String location) throws Exception {
+	public ResponseEntity<?> allRestaurantstatus(@RequestParam String location,@RequestParam Status status) throws Exception {
 		
 		ResponseEntity<?> response;
 
 		try {
-			response = new ResponseEntity<>(restaurantService.allRestaurantstatus(location), HttpStatus.OK);
+			response = new ResponseEntity<>(restaurantService.allRestaurantstatus(location,status), HttpStatus.OK);
 			    log.info("Restaurant Status changed");
 		} catch (Exception e) {
 			response = new ResponseEntity<ErrorHandler>(
