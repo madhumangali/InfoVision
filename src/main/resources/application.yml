@@ -1,5 +1,6 @@
 server:
   port: 8092
+<<<<<<< HEAD
   servlet:
     context-path: /infovision
     
@@ -14,3 +15,13 @@ spring:
     
     
   
+=======
+#  servlet:
+#    context-path: /infovision
+#    
+#spring:
+#  application:
+#    name: infovision-canteen-service
+#  profiles:
+#    active: local
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4

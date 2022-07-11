@@ -6,6 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+<<<<<<< HEAD
+=======
+import com.infovision.canteen.model.admin.Admin;
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 import com.infovision.canteen.model.employee.Employee;
 
 @Repository

@@ -1,5 +1,6 @@
 package com.infovision.canteen.serviceimpl;
 
+<<<<<<< HEAD
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,25 @@ import com.infovision.canteen.model.employee.Employee;
 import com.infovision.canteen.repository.AdminRepository;
 import com.infovision.canteen.repository.CredentialsRepository;
 import com.infovision.canteen.repository.DeliveryRepository;
+=======
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.infovision.canteen.dto.admin.AdminDto;
+import com.infovision.canteen.dto.employee.EmployeeDto;
+import com.infovision.canteen.model.admin.Admin;
+import com.infovision.canteen.model.employee.Employee;
+import com.infovision.canteen.repository.AdminRepository;
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 import com.infovision.canteen.repository.EmployeeRepository;
 import com.infovision.canteen.service.AdminService;
 
 @Service
+<<<<<<< HEAD
 public class AdminserviceImpl implements AdminService {
 
 	@Autowired
@@ -45,6 +61,21 @@ public class AdminserviceImpl implements AdminService {
 		// TODO Auto-generated method stub
 		Admin admin = new Admin();
 
+=======
+public class AdminserviceImpl implements AdminService{
+
+	@Autowired
+	private AdminRepository adminRepository;
+	
+	@Autowired
+	private EmployeeRepository employeeRepository;
+	
+	@Override
+	public AdminDto addAdmin(AdminDto adminDto) {
+		// TODO Auto-generated method stub
+		Admin admin =new Admin();
+		
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 		admin.setCity(adminDto.getCity());
 		admin.setCountry(adminDto.getCountry());
 		admin.setEmail(adminDto.getEmail());
@@ -55,19 +86,35 @@ public class AdminserviceImpl implements AdminService {
 		admin.setPassword(adminDto.getPassword());
 		admin.setImageUrl(adminDto.getImageUrl());
 		adminRepository.save(admin);
+<<<<<<< HEAD
 
 		editAdmin(adminDto, admin.getId());
 
+=======
+		
+		editAdmin(adminDto, admin.getId());
+		
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 		return adminDto;
 	}
 
 	@Override
+<<<<<<< HEAD
 	public AdminDto editAdmin(AdminDto adminDto, UUID id) {
 		// TODO Auto-generated method stub
 
 		if (adminRepository.existsById(id)) {
 			Admin admin = adminRepository.getOne(id);
 
+=======
+	public AdminDto editAdmin(AdminDto adminDto,UUID id) {
+		// TODO Auto-generated method stub
+		
+		if(adminRepository.existsById(id))
+		{
+			Admin admin= adminRepository.getOne(id);
+			
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 			admin.setCity(adminDto.getCity());
 			admin.setCountry(adminDto.getCountry());
 			admin.setEmail(adminDto.getEmail());
@@ -77,16 +124,25 @@ public class AdminserviceImpl implements AdminService {
 			admin.setMobileNumber(adminDto.getMobileNumber());
 			admin.setState(adminDto.getState());
 			admin.setImageUrl(adminDto.getImageUrl());
+<<<<<<< HEAD
 
 			adminRepository.save(admin);
 
 		}
 
+=======
+			
+			adminRepository.save(admin);
+			
+		}
+		
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 		return adminDto;
 	}
 
 	@Override
 	public List<Employee> getEmployeeList() throws Exception {
+<<<<<<< HEAD
 		List<Employee> employee = employeeRepository.findAll();
 
 		if (employee.isEmpty()) {
@@ -180,3 +236,16 @@ public class AdminserviceImpl implements AdminService {
 	
 	
 }}
+=======
+		List<Employee> employee  = employeeRepository.findAll();
+		
+		if(employee.isEmpty()) {
+			throw new Exception("employee list is empty");
+		}
+		
+		return employee;
+	}
+	
+
+}
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4

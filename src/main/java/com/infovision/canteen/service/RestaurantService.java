@@ -15,5 +15,12 @@ public interface RestaurantService {
 	RestaurantProfileDto addRestaurant(RestaurantProfileDto restaurantProfileDto) throws RestaurantException, IOException;
 
 	RestaurantProfileDto editRestaurant(RestaurantProfileDto restaurantProfileDto, UUID id);
+<<<<<<< HEAD
+=======
+	
+	Object getRestaurant();
+
+	String removeRestaurant(UUID restaurantProfileId) throws Exception;
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 
 }

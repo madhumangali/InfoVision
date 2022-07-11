@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.infovision.canteen.dto.admin.AdminDto;
+<<<<<<< HEAD
 import com.infovision.canteen.dto.credentials.CredentialsDto;
+=======
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 import com.infovision.canteen.exception.ErrorHandler;
 import com.infovision.canteen.service.AdminService;
 //import com.infovision.canteen.serviceimpl.JwtUserDetailsService;
@@ -29,6 +32,7 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+<<<<<<< HEAD
 
 //	@Autowired
 //	private JwtUserDetailsService userDetailsService;
@@ -36,11 +40,21 @@ public class AdminController {
 	@RequestMapping(value = "/registerforadmin", method = RequestMethod.POST)
 	public ResponseEntity<?> addAdmin(@RequestBody AdminDto adminDto) throws Exception {
 
+=======
+	
+//	@Autowired
+//	private JwtUserDetailsService userDetailsService;
+	
+	@RequestMapping(value = "/registerforadmin", method = RequestMethod.POST)
+	public ResponseEntity<?> addAdmin(@RequestBody AdminDto adminDto) throws Exception {
+		
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 		ResponseEntity<?> response;
 
 		try {
 			response = new ResponseEntity<>(adminService.addAdmin(adminDto), HttpStatus.OK);
 //			userDetailsService.save(adminDto.getEmail(),adminDto.getPassword());
+<<<<<<< HEAD
 
 			log.info("new admin is added");
 		} catch (Exception e) {
@@ -108,10 +122,27 @@ public class AdminController {
 	
 	@RequestMapping(value = "/registerforcredentials", method = RequestMethod.PUT)
 	public ResponseEntity<?> editcredentials(@RequestBody CredentialsDto credentialsDto,@RequestParam UUID id) throws Exception {
+=======
+			
+			    log.info("new admin is added");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("new admin is not added");
+		}
+
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/registerforadmin", method = RequestMethod.PUT)
+	public ResponseEntity<?> editAdmin(@RequestBody AdminDto adminDto,@RequestParam UUID id) throws Exception {
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 		
 		ResponseEntity<?> response;
 
 		try {
+<<<<<<< HEAD
 			response = new ResponseEntity<>(adminService.editCredentials(credentialsDto,id), HttpStatus.OK);
 //			userDetailsService.save(adminDto.getEmail(),adminDto.getPassword());
 			
@@ -131,11 +162,35 @@ public class AdminController {
 		try {
 			response = new ResponseEntity<>(adminService.getCredentialList(), HttpStatus.OK);
 		} catch (Exception e) {
+=======
+			response = new ResponseEntity<>(adminService.editAdmin(adminDto,id), HttpStatus.OK);
+			    log.info("admin details are edited");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("admin details are not edited");
+		}
+
+		return response;
+		
+	}
+	
+	@GetMapping("/view users")
+	@Operation(summary = "view employees")
+	public ResponseEntity<?> getEmployeeList( )    {
+		ResponseEntity<?> response;
+		try {
+			response = new ResponseEntity<>(adminService.getEmployeeList(), HttpStatus.OK);
+		}
+		catch(Exception e)
+		{
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
 		}
 
 		return response;
 	}
+<<<<<<< HEAD
 	
 	
 	
@@ -156,4 +211,6 @@ public class AdminController {
 		return response;
 	
 	}
+=======
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 }

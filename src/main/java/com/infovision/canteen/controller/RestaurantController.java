@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+<<<<<<< HEAD
+=======
+import org.springframework.web.bind.annotation.PathVariable;
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -67,4 +71,35 @@ public class RestaurantController {
 		return response;
 		
 	}
+<<<<<<< HEAD
+=======
+	
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ResponseEntity<?>getRestaurant() {
+		ResponseEntity<?> response;
+		try {
+			response = new ResponseEntity<>(restaurantService.getRestaurant(), HttpStatus.OK);
+			log.info("Viewing all the restaurents");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			log.error("Restaurant details are not getting");
+		}
+		return response;
+	}
+
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<?>removeRestaurant(@PathVariable("id") UUID restaurantProfileId) {
+		ResponseEntity<?> response;
+		try {
+			response = new ResponseEntity<>(restaurantService.removeRestaurant(restaurantProfileId), HttpStatus.OK);
+			log.info("Restaurant has been deleted");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			log.error("Restaurant has not been deleted");
+		}
+		return response;
+	}
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 }

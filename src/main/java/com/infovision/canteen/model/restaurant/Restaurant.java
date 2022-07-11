@@ -11,6 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+<<<<<<< HEAD
+=======
+import com.infovision.canteen.model.order.OrderStatus;
+
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,5 +36,8 @@ public class Restaurant {
 	@Enumerated(EnumType.STRING)
 	private Status restaurantStatus;
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 739b134e24a44c41db7a008bc59274776b8936d4
 }
