@@ -28,7 +28,8 @@ public interface OrderCartItemRepository extends JpaRepository<OrderCartItem, UU
 	@Query("select s from OrderCartItem s where s.order.date=:now AND s.restaurantItem.restaurant.restaurantid=:restId AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
 	List<OrderCartItem> getByRestaurant(@Param("restId")UUID restId,@Param("now") LocalDate now);
 
-	@Query("select new TopSellingOrders(s.restaurantItem, count(s)) from OrderCartItem s where s.order.date=:now AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
+	@Query("select new com.infovision.canteen.model.order.TopSellingOrders(s.restaurantItem.itemId, count(s)) from OrderCartItem s "
+			+ "where s.order.date=:now AND s.order.employeeOrderStatus LIKE 'CONFIRM' GROUP BY s.restaurantItem.itemId")
 	List<TopSellingOrders> getTopOrders(@Param("now")LocalDate now);
 
 	@Query("select s from OrderCartItem s where s.order.date >=:date AND s.restaurantItem.restaurant.restaurantid=:restId AND s.order.employeeOrderStatus LIKE 'CONFIRM'")

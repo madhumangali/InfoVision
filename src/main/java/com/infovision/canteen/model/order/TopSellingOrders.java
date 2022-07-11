@@ -21,24 +21,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
+//@Data
+//@Entity
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class TopSellingOrders {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID orderId;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+//	private UUID orderId;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	private RestaurantItem restaurantItem;
+	
+	private UUID itemId;
 	
 	private long count;
 
-	public TopSellingOrders(RestaurantItem restItem, long count) {
+	public TopSellingOrders(UUID restItem, long count) {
 		super();
-		this.restaurantItem = restItem;
+		this.itemId = restItem;
 		this.count = count;
 	}
 	
