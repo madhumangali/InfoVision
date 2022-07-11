@@ -1,6 +1,7 @@
 package com.infovision.canteen.repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,10 +18,8 @@ public interface OrderRepository extends JpaRepository<Orders, UUID>{
 	@Query("select s from Orders s where s.employee.empId=:empId")
 	List<Orders> getByEmployee(UUID empId);
 
-//	@Query("select s from Orders s where s.restaurantItem.restaurant.restaurantid=:restId")
-//	List<Orders> getByRestaurant(UUID restId);
+	@Query("select s from Orders s where s.date=:localDate AND s.time<=:now AND s.delivery.deliveryId=:null")
+	List<Orders> findByTIme(LocalTime now, LocalDate localDate);
 
-//	@Query("SELECT s.cart,COUNT(s.cart.restaurantItem.itemId) from Orders s GROUP BY s.cart.restaurantItem.itemId where s.date=:date")
-//	List<Orders> getByDate(LocalDate date);
-
+	
 }

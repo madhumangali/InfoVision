@@ -46,9 +46,6 @@ public class OrderCartItem {
 	private OrderStatus DeliveryOrderStatus;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private Delivery delivery;
-	
-	@OneToOne(cascade = CascadeType.ALL)
 	private Orders order;
 	
 	private int quantity;

@@ -39,6 +39,10 @@ public class Delivery {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 	
+	@Enumerated(EnumType.STRING)
+	private WorkingStatus workingStatus;
+	
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Credentials credentials;
 	

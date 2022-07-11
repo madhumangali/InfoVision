@@ -43,8 +43,14 @@ public class Orders {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Payment payment;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Delivery delivery;
+	
 	@Enumerated(EnumType.STRING)
 	private EmployeeOrderStatus employeeOrderStatus;
+	
+	@Enumerated(EnumType.STRING)
+	private DeliveryOrderStatus deliveryOrderStatus;
 	
 	private LocalDate date;
 	
