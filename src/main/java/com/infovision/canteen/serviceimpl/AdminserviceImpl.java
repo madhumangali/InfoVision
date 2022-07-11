@@ -39,11 +39,13 @@ public class AdminserviceImpl implements AdminService {
 	@Autowired
 	private DeliveryRepository deliveryRepository;
 
+
+	
 	@Override
 	public AdminDto addAdmin(AdminDto adminDto) {
 		// TODO Auto-generated method stub
-		Admin admin = new Admin();
-
+		Admin admin =new Admin();
+		
 		admin.setCity(adminDto.getCity());
 		admin.setCountry(adminDto.getCountry());
 		admin.setEmail(adminDto.getEmail());
@@ -57,16 +59,20 @@ public class AdminserviceImpl implements AdminService {
 
 		editAdmin(adminDto, admin.getId());
 
+		
+		editAdmin(adminDto, admin.getId());
+		
 		return adminDto;
 	}
 
-	@Override
-	public AdminDto editAdmin(AdminDto adminDto, UUID id) {
+
+	public AdminDto editAdmin(AdminDto adminDto,UUID id) {
 		// TODO Auto-generated method stub
-
-		if (adminRepository.existsById(id)) {
-			Admin admin = adminRepository.getOne(id);
-
+		
+		if(adminRepository.existsById(id))
+		{
+			Admin admin= adminRepository.getOne(id);
+			
 			admin.setCity(adminDto.getCity());
 			admin.setCountry(adminDto.getCountry());
 			admin.setEmail(adminDto.getEmail());
@@ -203,4 +209,6 @@ public class AdminserviceImpl implements AdminService {
 			return "deleted";
 			
 	
-}}
+}
+	}
+		

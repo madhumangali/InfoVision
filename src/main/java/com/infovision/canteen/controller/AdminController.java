@@ -30,17 +30,23 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
+
+
+
+	
 //	@Autowired
 //	private JwtUserDetailsService userDetailsService;
-
+	
 	@RequestMapping(value = "/registerforadmin", method = RequestMethod.POST)
 	public ResponseEntity<?> addAdmin(@RequestBody AdminDto adminDto) throws Exception {
+		
 
 		ResponseEntity<?> response;
 
 		try {
 			response = new ResponseEntity<>(adminService.addAdmin(adminDto), HttpStatus.OK);
 //			userDetailsService.save(adminDto.getEmail(),adminDto.getPassword());
+
 
 			log.info("new admin is added");
 		} catch (Exception e) {
@@ -71,18 +77,6 @@ public class AdminController {
 
 	}
 
-	@GetMapping("/view users")
-	@Operation(summary = "view employees")
-	public ResponseEntity<?> getEmployeeList() {
-		ResponseEntity<?> response;
-		try {
-			response = new ResponseEntity<>(adminService.getEmployeeList(), HttpStatus.OK);
-		} catch (Exception e) {
-			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
-		}
-
-		return response;
-	}
 
 	// adding credentials
 
@@ -107,22 +101,28 @@ public class AdminController {
 	
 	
 	@RequestMapping(value = "/registerforcredentials", method = RequestMethod.PUT)
-	public ResponseEntity<?> editcredentials(@RequestBody CredentialsDto credentialsDto,@RequestParam UUID id) throws Exception {
+	public ResponseEntity<?> editCredentials(@RequestBody CredentialsDto credentialsDto,@RequestParam UUID id) throws Exception {
 		
 		ResponseEntity<?> response;
-
+	
 		try {
+
 			response = new ResponseEntity<>(adminService.editCredentials(credentialsDto,id), HttpStatus.OK);
 //			userDetailsService.save(adminDto.getEmail(),adminDto.getPassword());
 			
 			    log.info(" credential is edited");
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			response = new ResponseEntity<ErrorHandler>(
 					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
-			 log.error("credential is not edited");
+			 log.error("new admin is not added");
 		}
+
 		return response;
+		
 	}
+	
+	
 	
 	@GetMapping("/view credential")
 	@Operation(summary = "view credential list")
@@ -131,11 +131,31 @@ public class AdminController {
 		try {
 			response = new ResponseEntity<>(adminService.getCredentialList(), HttpStatus.OK);
 		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("admin details are not edited");
+		}
+
+		return response;
+		
+	}
+	
+	@GetMapping("/viewusers")
+	@Operation(summary = "view employees")
+	public ResponseEntity<?> getEmployeeList( )    {
+		ResponseEntity<?> response;
+		try {
+			response = new ResponseEntity<>(adminService.getEmployeeList(), HttpStatus.OK);
+		}
+		catch(Exception e)
+		{
+
 			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
 		}
 
 		return response;
 	}
+
 	
 	
 	
@@ -156,6 +176,7 @@ public class AdminController {
 		return response;
 	
 	}
+
 	
 	@RequestMapping(value = "/registerforadmin", method = RequestMethod.GET)
 	public ResponseEntity<?> viewAdmin(@RequestParam  String email) throws Exception {
@@ -192,4 +213,5 @@ public class AdminController {
 		return response;
 		
 	}
+
 }

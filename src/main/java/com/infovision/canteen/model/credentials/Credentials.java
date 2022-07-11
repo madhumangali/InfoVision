@@ -9,6 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.infovision.canteen.model.cart.Cart;
+import com.infovision.canteen.model.employee.Employee;
+import com.infovision.canteen.model.employee.Profile;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +22,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Credentials {
-
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
