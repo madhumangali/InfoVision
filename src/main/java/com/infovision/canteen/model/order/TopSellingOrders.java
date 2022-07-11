@@ -32,10 +32,16 @@ public class TopSellingOrders {
 	private UUID orderId;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private RestaurantItem restItem;
+	private RestaurantItem restaurantItem;
 	
-	private int count;
+	private long count;
+
+	public TopSellingOrders(RestaurantItem restItem, long count) {
+		super();
+		this.restaurantItem = restItem;
+		this.count = count;
+	}
 	
-	private LocalDate date;
+	
 
 }

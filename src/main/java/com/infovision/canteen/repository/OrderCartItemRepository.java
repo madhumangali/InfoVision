@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.infovision.canteen.model.admin.MenuItem;
 import com.infovision.canteen.model.order.EmployeeOrderStatus;
 import com.infovision.canteen.model.order.OrderCartItem;
+import com.infovision.canteen.model.order.TopSellingOrders;
 
 @Repository
 public interface OrderCartItemRepository extends JpaRepository<OrderCartItem, UUID>{
@@ -27,8 +28,8 @@ public interface OrderCartItemRepository extends JpaRepository<OrderCartItem, UU
 	@Query("select s from OrderCartItem s where s.order.date=:now AND s.restaurantItem.restaurant.restaurantid=:restId AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
 	List<OrderCartItem> getByRestaurant(@Param("restId")UUID restId,@Param("now") LocalDate now);
 
-	@Query("select s.restaurantItem,COUNT(s.restaurantItem) from OrderCartItem s where s.order.date=:now AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
-	List<OrderCartItem> getTopOrders(@Param("now")LocalDate now);
+	@Query("select new TopSellingOrders(s.restaurantItem, count(s)) from OrderCartItem s where s.order.date=:now AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
+	List<TopSellingOrders> getTopOrders(@Param("now")LocalDate now);
 
 	@Query("select s from OrderCartItem s where s.order.date >=:date AND s.restaurantItem.restaurant.restaurantid=:restId AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
 	List<OrderCartItem> getWeekRevenue(@Param("restId")UUID restId,@Param("date")LocalDate date);

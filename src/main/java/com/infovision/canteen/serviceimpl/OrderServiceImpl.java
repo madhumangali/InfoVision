@@ -17,6 +17,7 @@ import com.infovision.canteen.model.order.EmployeeOrderStatus;
 import com.infovision.canteen.model.order.OrderCartItem;
 import com.infovision.canteen.model.order.OrderStatus;
 import com.infovision.canteen.model.order.Orders;
+import com.infovision.canteen.model.order.TopSellingOrders;
 import com.infovision.canteen.model.payment.Mode;
 import com.infovision.canteen.model.payment.Payment;
 import com.infovision.canteen.model.restaurant.ItemStatus;
@@ -199,10 +200,10 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderCartItem> topSellingOrders() throws OrderException {
+	public List<TopSellingOrders> topSellingOrders() throws OrderException {
 		// TODO Auto-generated method stub
 
-		List<OrderCartItem> orders = orderCartItemRepository.getTopOrders(LocalDate.now());
+		List<TopSellingOrders> orders = orderCartItemRepository.getTopOrders(LocalDate.now());
 
 		if (orders.isEmpty())
 			throw new OrderException("Orders not found today");

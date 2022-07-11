@@ -7,6 +7,7 @@ import com.infovision.canteen.dto.Order.OrderDto;
 import com.infovision.canteen.exception.OrderException;
 import com.infovision.canteen.model.order.OrderCartItem;
 import com.infovision.canteen.model.order.Orders;
+import com.infovision.canteen.model.order.TopSellingOrders;
 
 public interface OrderService {
 
@@ -20,6 +21,6 @@ public interface OrderService {
 
 	List<OrderCartItem> getRestaurantOrders(UUID restId) throws OrderException;
 
-	List<OrderCartItem> topSellingOrders()throws OrderException;
+	List<TopSellingOrders> topSellingOrders()throws OrderException;
 
 }
