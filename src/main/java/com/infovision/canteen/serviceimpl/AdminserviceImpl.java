@@ -16,6 +16,7 @@ import com.infovision.canteen.exception.AdminException;
 import com.infovision.canteen.model.admin.Admin;
 import com.infovision.canteen.model.credentials.Credentials;
 import com.infovision.canteen.model.credentials.Role;
+import com.infovision.canteen.model.delivery.Address;
 import com.infovision.canteen.model.delivery.Delivery;
 import com.infovision.canteen.model.employee.Employee;
 import com.infovision.canteen.repository.AdminRepository;
@@ -150,8 +151,10 @@ public class AdminserviceImpl implements AdminService {
 		{
 			Delivery delivery=new Delivery();
 			
+			Address address = new Address();
+		
 			delivery.setCredentials(credential);
-			
+			delivery.setAddress(address);
 			deliveryRepository.save(delivery);
 
 		}
