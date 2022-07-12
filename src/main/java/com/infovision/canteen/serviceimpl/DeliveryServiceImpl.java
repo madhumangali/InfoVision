@@ -18,72 +18,48 @@ import com.infovision.canteen.service.DeliveryService;
 
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
-	
+
 	@Autowired
 	private DeliveryRepository deliveryRepository;
-	
+
 	@Autowired
 	private AddressRepository addressRepository;
 
 	@Autowired
 	private OrderRepository orderRepository;
 
-	
-	//Login and set status as ACTIVE
+	// Login and set status as ACTIVE
 	@Override
 	public String login(String userName, String password) throws Exception {
 		Delivery delivery = deliveryRepository.findUser(userName, password);
-		if(delivery == null)
+		if (delivery == null)
 			throw new Exception("Invalid Username or Password");
 		delivery.setDeliveryPersonStatus(DeliveryPersonStatus.ACTIVE);
 		return "Successfully logged in and Delivery boy is now ACTIVE";
 	}
 
-	
-	//Set Status as INACTIVE
+	// Set Status as INACTIVE and ACTIVE
 	@Override
-	public String updateDeliveryPersonStatus(UUID deliveryId) throws Exception {
-		Optional<Delivery> optionalDelivery = deliveryRepository.findById(deliveryId);
-		Delivery delivery = new Delivery();
-		if(!optionalDelivery.isPresent())
+	public String updateDeliveryPersonStatus(UUID deliveryId, DeliveryPersonStatus status) throws Exception {
+
+		Delivery optionalDelivery = deliveryRepository.getOne(deliveryId);
+
+		if (optionalDelivery == null)
 			throw new Exception("Delivery Boy does not exist");
-		delivery.setDeliveryPersonStatus(DeliveryPersonStatus.INACTIVE);
+		optionalDelivery.setDeliveryPersonStatus(status);
+		deliveryRepository.save(optionalDelivery);
+
 		return "Delivery Boy is now INACTIVE";
 	}
 
-	
-	//Add Delivery Boy's Profile
+	// Add Delivery Boy's Profile
 	@Override
-	public DeliveryProfileDto addDeliveryBoy(DeliveryProfileDto deliveryProfileDto) {
-		Address address = new Address();
-		Delivery delivery = new Delivery();
-		
-		address.setFirstName(deliveryProfileDto.getFirstName());
-		address.setLastName(deliveryProfileDto.getLastName());
-		address.setEmail(deliveryProfileDto.getEmail());
-		address.setMobileNumber(deliveryProfileDto.getMobileNumber());
-		address.setAddressLine(deliveryProfileDto.getAddressLine());
-		address.setPincode(deliveryProfileDto.getPincode());
-		address.setCountry(deliveryProfileDto.getCountry());
-		address.setState(deliveryProfileDto.getState());
-		address.setCity(deliveryProfileDto.getCity());
-		address.setGender(deliveryProfileDto.getGender());
-		address.setImageUrl(deliveryProfileDto.getImageUrl());
-		addressRepository.save(address);
-		
-		delivery.setAddress(address);
-		deliveryRepository.save(delivery);
-		return deliveryProfileDto;
-	}
+	public Delivery addDeliveryBoy(DeliveryProfileDto deliveryProfileDto, UUID deliveryId) throws Exception {
 
-	//Edit Delivery Boy's Profile by id
-	@Override
-	public DeliveryProfileDto editDeliveryBoy(DeliveryProfileDto deliveryProfileDto, UUID deliveryId) throws Exception {
-		Optional<Delivery> optionalDelivery = deliveryRepository.findById(deliveryId);
-		if(!optionalDelivery.isPresent())
-			throw new Exception("Delivery Boy is Invalid");
-		else {
-			Delivery delivery = new Delivery();		
+		Delivery delivery = deliveryRepository.getOne(deliveryId);
+
+		if (deliveryRepository.existsById(deliveryId)) {
+
 			delivery.getAddress().setFirstName(deliveryProfileDto.getFirstName());
 			delivery.getAddress().setLastName(deliveryProfileDto.getLastName());
 			delivery.getAddress().setEmail(deliveryProfileDto.getEmail());
@@ -95,30 +71,63 @@ public class DeliveryServiceImpl implements DeliveryService {
 			delivery.getAddress().setCity(deliveryProfileDto.getCity());
 			delivery.getAddress().setGender(deliveryProfileDto.getGender());
 			delivery.getAddress().setImageUrl(deliveryProfileDto.getImageUrl());
+
+			addressRepository.save(delivery.getAddress());
+
 			deliveryRepository.save(delivery);
-		}
-		return deliveryProfileDto;
+		} else
+			throw new Exception("Delivery Boy Details not found");
+
+		return delivery;
 	}
 
-	
-	//View Delivery Boy's Profile by id
+	// Edit Delivery Boy's Profile by id
+	@Override
+	public Delivery editDeliveryBoy(DeliveryProfileDto deliveryProfileDto, UUID deliveryId) throws Exception {
+
+		Delivery delivery = deliveryRepository.getOne(deliveryId);
+
+		if (deliveryRepository.existsById(deliveryId)) {
+
+			delivery.getAddress().setFirstName(deliveryProfileDto.getFirstName());
+			delivery.getAddress().setLastName(deliveryProfileDto.getLastName());
+			delivery.getAddress().setEmail(deliveryProfileDto.getEmail());
+			delivery.getAddress().setMobileNumber(deliveryProfileDto.getMobileNumber());
+			delivery.getAddress().setAddressLine(deliveryProfileDto.getAddressLine());
+			delivery.getAddress().setPincode(deliveryProfileDto.getPincode());
+			delivery.getAddress().setCountry(deliveryProfileDto.getCountry());
+			delivery.getAddress().setState(deliveryProfileDto.getState());
+			delivery.getAddress().setCity(deliveryProfileDto.getCity());
+			delivery.getAddress().setGender(deliveryProfileDto.getGender());
+			delivery.getAddress().setImageUrl(deliveryProfileDto.getImageUrl());
+
+			addressRepository.save(delivery.getAddress());
+
+			deliveryRepository.save(delivery);
+		} else
+			throw new Exception("Delivery Boy Details not found");
+
+		return delivery;
+
+	}
+
+	// View Delivery Boy's Profile by id
 	@Override
 	public Optional<Delivery> viewDeliveryProfileById(UUID deliveryId) throws Exception {
 		Optional<Delivery> delivery = deliveryRepository.findById(deliveryId);
-		if(delivery == null)
+		if (delivery == null)
 			throw new Exception("Delivery boy not found");
 		return delivery;
 	}
 
-
 	@Override
 	public Orders getDeliveryOrder(UUID deliveryId) throws Exception {
 		// TODO Auto-generated method stub
-		Orders order=orderRepository.getOrderById(deliveryId);
-		
-		if(order == null)
+		Orders order = orderRepository.getOrderById(deliveryId);
+
+		if (order == null)
 			throw new Exception("Orders are not assigned");
-		
+
 		return order;
 	}
 

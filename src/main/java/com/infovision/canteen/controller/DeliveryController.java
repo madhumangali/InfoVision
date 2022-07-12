@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.infovision.canteen.dto.delivery.DeliveryProfileDto;
 import com.infovision.canteen.exception.ErrorHandler;
+import com.infovision.canteen.model.delivery.DeliveryPersonStatus;
 import com.infovision.canteen.service.DeliveryService;
 
 import lombok.extern.log4j.Log4j2;
@@ -44,10 +45,10 @@ public class DeliveryController {
 	
 //Delivery boy status update
 	@RequestMapping(value = "/deliverypersonstatus", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateDeliveryPersonStatus(@RequestParam UUID deliveryId) throws Exception {
+	public ResponseEntity<?> updateDeliveryPersonStatus(@RequestParam UUID deliveryId,@RequestParam DeliveryPersonStatus status) throws Exception {
 		ResponseEntity<?> response;
 		try {
-			response = new ResponseEntity<>(deliveryService.updateDeliveryPersonStatus(deliveryId), HttpStatus.OK);
+			response = new ResponseEntity<>(deliveryService.updateDeliveryPersonStatus(deliveryId,status), HttpStatus.OK);
 			    log.info("Employee details are edited");
 		} catch (Exception e) {
 			response = new ResponseEntity<ErrorHandler>(
@@ -60,10 +61,10 @@ public class DeliveryController {
 	
 //Add Delivery Boy's Profile
 	@RequestMapping(value = "/deliveryperson", method =  RequestMethod.POST)
-	public ResponseEntity<?>addDeliveryBoy(@RequestBody DeliveryProfileDto deliveryProfileDto) {
+	public ResponseEntity<?>addDeliveryBoy(@RequestBody DeliveryProfileDto deliveryProfileDto,@RequestParam UUID deliveryId) {
 		ResponseEntity<?> response;
 		try {
-			response = new ResponseEntity<>(deliveryService.addDeliveryBoy(deliveryProfileDto), HttpStatus.OK);
+			response = new ResponseEntity<>(deliveryService.addDeliveryBoy(deliveryProfileDto,deliveryId), HttpStatus.OK);
 			    log.info("New Delivery boy has been added successfully");
 		} catch (Exception e) {
 			response = new ResponseEntity<ErrorHandler>(
