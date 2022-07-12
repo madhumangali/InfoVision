@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.infovision.canteen.dto.delivery.DeliveryProfileDto;
 import com.infovision.canteen.model.delivery.Delivery;
+import com.infovision.canteen.model.order.Orders;
 
 public interface DeliveryService {
 
@@ -17,5 +18,7 @@ public interface DeliveryService {
 	DeliveryProfileDto editDeliveryBoy(DeliveryProfileDto deliveryProfileDto, UUID deliveryId) throws Exception;
 
 	Optional<Delivery> viewDeliveryProfileById(UUID deliveryId) throws Exception;
+
+	Orders getDeliveryOrder(UUID deliveryId) throws Exception;
 
 }

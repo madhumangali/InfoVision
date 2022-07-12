@@ -21,5 +21,8 @@ public interface OrderRepository extends JpaRepository<Orders, UUID>{
 	@Query("select s from Orders s where s.date=:localDate AND s.time<=:now AND s.delivery.deliveryId=:null")
 	List<Orders> findByTIme(LocalTime now, LocalDate localDate);
 
+	@Query("select s from Orders s where s.delivery.deliveryId=:deliveryId")
+	Orders getOrderById(UUID deliveryId);
+
 	
 }

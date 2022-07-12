@@ -10,8 +10,10 @@ import com.infovision.canteen.dto.delivery.DeliveryProfileDto;
 import com.infovision.canteen.model.delivery.Address;
 import com.infovision.canteen.model.delivery.Delivery;
 import com.infovision.canteen.model.delivery.DeliveryPersonStatus;
+import com.infovision.canteen.model.order.Orders;
 import com.infovision.canteen.repository.AddressRepository;
 import com.infovision.canteen.repository.DeliveryRepository;
+import com.infovision.canteen.repository.OrderRepository;
 import com.infovision.canteen.service.DeliveryService;
 
 @Service
@@ -22,6 +24,9 @@ public class DeliveryServiceImpl implements DeliveryService {
 	
 	@Autowired
 	private AddressRepository addressRepository;
+
+	@Autowired
+	private OrderRepository orderRepository;
 
 	
 	//Login and set status as ACTIVE
@@ -103,6 +108,18 @@ public class DeliveryServiceImpl implements DeliveryService {
 		if(delivery == null)
 			throw new Exception("Delivery boy not found");
 		return delivery;
+	}
+
+
+	@Override
+	public Orders getDeliveryOrder(UUID deliveryId) throws Exception {
+		// TODO Auto-generated method stub
+		Orders order=orderRepository.getOrderById(deliveryId);
+		
+		if(order == null)
+			throw new Exception("Orders are not assigned");
+		
+		return order;
 	}
 
 }

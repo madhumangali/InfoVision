@@ -105,4 +105,19 @@ public class DeliveryController {
 		return response;
 	}	
 	
+	//View Delivery Boy's Order yet to be delivered
+	@RequestMapping(value = "/deliveryorder", method = RequestMethod.GET)
+	public ResponseEntity<?> getDeliveryOrder(@RequestParam UUID deliveryId) throws Exception {
+		ResponseEntity<?> response;
+		try {
+			response = new ResponseEntity<>(deliveryService.getDeliveryOrder(deliveryId), HttpStatus.OK);
+			    log.info("viewing delivery boy's profile details");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("Unable to view delivery boy's profile details");
+		}
+		return response;
+	}	
+	
 }
