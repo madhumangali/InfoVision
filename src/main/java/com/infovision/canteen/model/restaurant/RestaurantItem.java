@@ -35,6 +35,7 @@ public class RestaurantItem {
 	
 	private String imageUrl;
 	
+	private double discount;
 	
 	@Enumerated(EnumType.STRING)
 	private ItemStatus status;

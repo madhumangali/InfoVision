@@ -2,7 +2,6 @@ package com.infovision.canteen.serviceimpl;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +23,7 @@ import com.infovision.canteen.model.order.TopSellingOrders;
 import com.infovision.canteen.model.payment.Mode;
 import com.infovision.canteen.model.payment.Payment;
 import com.infovision.canteen.model.restaurant.ItemStatus;
+import com.infovision.canteen.model.restaurant.RestaurantItem;
 import com.infovision.canteen.model.restaurant.Status;
 import com.infovision.canteen.repository.CartItemRepository;
 import com.infovision.canteen.repository.CartRepository;
@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
 
@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private PaymentController paymentController;
-	
+
 	@Autowired
 	private TopSellingOrdersRepository topSellingOrdersRepository;
 
@@ -90,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
 				List<CartItem> cartItems = cartItemRepository.findCartItems(orderDto.getCartId());
 
 				order.setCart(employeeRepository.getOne(orderDto.getEmpId()).getCart());
-				
+
 				for (CartItem cartItem : cartItems) {
 
 					OrderCartItem orderCartItem = new OrderCartItem();
@@ -119,14 +119,17 @@ public class OrderServiceImpl implements OrderService {
 		String s = String.valueOf(cartRepository.getOne(orderDto.getCartId()).getTotalamount());
 
 //		paymentController.getRedirect(orderDto.getEmpId().toString(), s, order.getOrderId().toString());
-		
+
 //		"http://localhost:8091/paytm/submitPaymentDetail?CUST_ID="+order.getEmployee().getEmpId()+
 //		"&TXN_AMOUNT="+cartRepository.getOne(orderDto.getCartId()).getTotalamount()+"&ORDER_ID="+order.getOrderId()
-		
+
 		ModelAndView m = new ModelAndView();
-		
-		 m=restTemplate.getForObject("http://localhost:8080/submitPaymentDetail?CUST_ID="+order.getEmployee().getEmpId().toString()+
-				"&TXN_AMOUNT="+s+"&ORDER_ID="+order.getOrderId().toString(), ModelAndView.class);
+
+		m = restTemplate
+				.getForObject(
+						"http://localhost:8080/submitPaymentDetail?CUST_ID=" + order.getEmployee().getEmpId().toString()
+								+ "&TXN_AMOUNT=" + s + "&ORDER_ID=" + order.getOrderId().toString(),
+						ModelAndView.class);
 
 		paymentRepository.save(payment);
 
@@ -142,8 +145,8 @@ public class OrderServiceImpl implements OrderService {
 
 		for (OrderCartItem orderCartItem : orderCartItems) {
 
-			if (orderCartItem.getRestaurantItem().getStatus().equals(ItemStatus.AVAILABLE) && 
-					orderCartItem.getRestaurantItem().getRestaurant().getRestaurantStatus().equals(Status.ACTIVE)) {
+			if (orderCartItem.getRestaurantItem().getStatus().equals(ItemStatus.AVAILABLE)
+					&& orderCartItem.getRestaurantItem().getRestaurant().getRestaurantStatus().equals(Status.ACTIVE)) {
 				orderCartItem.setRestaurantOrderStatus(OrderStatus.ACCEPT);
 				orderCartItemRepository.save(orderCartItem);
 			}
@@ -225,23 +228,40 @@ public class OrderServiceImpl implements OrderService {
 
 		List<TopSellingOrders> orders = orderCartItemRepository.getTopOrders(LocalDate.now());
 
-		
 		if (orders.isEmpty())
 			throw new OrderException("Orders not found today");
-		
-		
-		for(TopSellingOrders topSellingOrders:orders)
-		{
-			TopSellingOrders top=new TopSellingOrders();
-			
+
+		for (TopSellingOrders topSellingOrders : orders) {
+			TopSellingOrders top = new TopSellingOrders();
+
 			top.setCount(topSellingOrders.getCount());
 			top.setItemId(topSellingOrders.getItemId());
 			top.setDate(LocalDate.now());
-			
+
 			topSellingOrdersRepository.save(top);
 		}
 
 		return orders;
 	}
+
+	@Override
+	public Object discounts(UUID itemId, double discount) throws OrderException {
+		// TODO Auto-generated method stub
+		
+		if (restaurantItemRepository.existsById(itemId) ){
+		RestaurantItem restaurantItem=restaurantItemRepository.getOne(itemId);
+		
+		restaurantItem.setDiscount(discount);
+		
+		restaurantItemRepository.save(restaurantItem);
+		}
+		else
+			throw new OrderException("RestaurantItem not found");
+		
+		
+		return null;
+	}
+
+
 
 }

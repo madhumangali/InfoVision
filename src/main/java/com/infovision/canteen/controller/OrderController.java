@@ -135,4 +135,22 @@ public class OrderController {
 		return response;
 	
 	}
+	
+	@RequestMapping(value = "/discount", method = RequestMethod.GET)
+	public ResponseEntity<?> discount(@RequestParam UUID itemId,@RequestParam double discount) throws Exception {
+		
+		ResponseEntity<?> response;
+
+		try {
+			response = new ResponseEntity<>(orderService.discounts(itemId,discount), HttpStatus.OK);
+			log.info(" Order is cancelled");
+		} catch (Exception e) {
+			response = new ResponseEntity<ErrorHandler>(
+					new ErrorHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+			 log.error("new Order is not cancelled");
+		}
+
+		return response;
+	
+	}
 }

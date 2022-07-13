@@ -89,7 +89,8 @@ public class CartServiceImpl implements CartService {
 
 		cartItem.setCart(employee.getCart());
 		cartItem.setRestaurantItem(restaurantItem);
-		cartItem.setAmount(quantity * restaurantItem.getItemprice());
+		double discount=restaurantItem.getDiscount()*100;
+        cartItem.setAmount(quantity * (restaurantItem.getItemprice()-discount));
 		cartItem.setQuantity(quantity);
 		cartItemRepository.save(cartItem);
 	}

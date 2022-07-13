@@ -23,4 +23,6 @@ public interface OrderService {
 
 	List<TopSellingOrders> topSellingOrders()throws OrderException;
 
+	Object discounts(UUID itemId, double discount) throws OrderException;
+
 }
