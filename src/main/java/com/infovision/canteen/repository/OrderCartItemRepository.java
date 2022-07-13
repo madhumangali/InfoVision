@@ -35,9 +35,6 @@ public interface OrderCartItemRepository extends JpaRepository<OrderCartItem, UU
 	@Query("select s from OrderCartItem s where s.order.date >=:date AND s.restaurantItem.restaurant.restaurantid=:restId AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
 	List<OrderCartItem> getWeekRevenue(@Param("restId")UUID restId,@Param("date")LocalDate date);
 
-	@Query("select s from OrderCartItem s where MONTH(s.order.date)=:month AND YEAR(s.order.date)=:year AND s.restaurantItem.restaurant.restaurantid=:restId AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
-	List<OrderCartItem> getyearRevenue(@Param("restId")UUID restId,@Param("month")Month month,@Param("year") int year);
-
 	@Query("select s from OrderCartItem s where s.order.date=:now AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
 	List<OrderCartItem> getDayAllRestRevenue(@Param("now")LocalDate now);
 
@@ -49,5 +46,10 @@ public interface OrderCartItemRepository extends JpaRepository<OrderCartItem, UU
 
 	@Query("select s from OrderCartItem s where s.order.orderId=:orderId")
 	List<OrderCartItem> findByOrderId(UUID orderId);
+
+	@Query("select s from OrderCartItem s where MONTH(s.order.date)=:value AND YEAR(s.order.date)=:year AND s.restaurantItem.restaurant.restaurantid=:restId AND s.order.employeeOrderStatus LIKE 'CONFIRM'")
+	List<OrderCartItem> getMonthRevenue(UUID restId, int value, int year);
+
+	
 
 }

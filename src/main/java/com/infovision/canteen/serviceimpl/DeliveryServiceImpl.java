@@ -10,6 +10,7 @@ import com.infovision.canteen.dto.delivery.DeliveryProfileDto;
 import com.infovision.canteen.model.delivery.Address;
 import com.infovision.canteen.model.delivery.Delivery;
 import com.infovision.canteen.model.delivery.DeliveryPersonStatus;
+import com.infovision.canteen.model.delivery.WorkingStatus;
 import com.infovision.canteen.model.order.Orders;
 import com.infovision.canteen.repository.AddressRepository;
 import com.infovision.canteen.repository.DeliveryRepository;
@@ -103,11 +104,14 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 			addressRepository.save(delivery.getAddress());
 
+			delivery.setWorkingStatus(WorkingStatus.FREE);
 			deliveryRepository.save(delivery);
+			
+			return delivery;
 		} else
 			throw new Exception("Delivery Boy Details not found");
 
-		return delivery;
+	
 
 	}
 

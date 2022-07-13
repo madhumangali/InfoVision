@@ -1,6 +1,7 @@
 package com.infovision.canteen.serviceimpl;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,7 +59,9 @@ public class RevenueServiceImpl implements RevenueService {
 	public double monthRevenue(UUID restId) throws RevenueException {
 		// TODO Auto-generated method stub
 
-		List<OrderCartItem> orders = orderCartItemRepository.getyearRevenue(restId, LocalDate.now().getMonth(),
+	
+		
+		List<OrderCartItem> orders = orderCartItemRepository.getMonthRevenue(restId,LocalDate.now().getMonth().getValue(),
 				LocalDate.now().getYear());
 
 		if (orders.isEmpty())

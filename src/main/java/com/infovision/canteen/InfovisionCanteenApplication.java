@@ -13,5 +13,10 @@ public class InfovisionCanteenApplication {
 		SpringApplication.run(InfovisionCanteenApplication.class, args);
 	}
 	
+	@Bean
+	public RestTemplate getTemplate()
+	{
+		return new RestTemplate();
+	}
 
 }

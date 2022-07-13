@@ -2,11 +2,14 @@ package com.infovision.canteen.serviceimpl;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.infovision.canteen.controller.PaymentController;
 import com.infovision.canteen.dto.Order.OrderDto;
@@ -30,6 +33,7 @@ import com.infovision.canteen.repository.OrderRepository;
 import com.infovision.canteen.repository.PaymentRepository;
 import com.infovision.canteen.repository.RestaurantItemRepository;
 import com.infovision.canteen.repository.RestaurantRepository;
+import com.infovision.canteen.repository.TopSellingOrdersRepository;
 import com.infovision.canteen.service.OrderService;
 
 @Service
@@ -37,6 +41,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Autowired
 	private RestaurantItemRepository restaurantItemRepository;
@@ -61,6 +68,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private PaymentController paymentController;
+	
+	@Autowired
+	private TopSellingOrdersRepository topSellingOrdersRepository;
 
 	@Override
 	public String orderItem(OrderDto orderDto) throws Exception {
@@ -108,7 +118,9 @@ public class OrderServiceImpl implements OrderService {
 
 		String s = String.valueOf(cartRepository.getOne(orderDto.getCartId()).getTotalamount());
 
-		paymentController.getRedirect(orderDto.getEmpId().toString(), s, order.getOrderId().toString());
+//		paymentController.getRedirect(orderDto.getEmpId().toString(), s, order.getOrderId().toString());
+		
+//		ModelAndView m=restTemplate.getForObject("http://localhost:8091/")
 
 		paymentRepository.save(payment);
 
@@ -207,8 +219,21 @@ public class OrderServiceImpl implements OrderService {
 
 		List<TopSellingOrders> orders = orderCartItemRepository.getTopOrders(LocalDate.now());
 
+		
 		if (orders.isEmpty())
 			throw new OrderException("Orders not found today");
+		
+		
+		for(TopSellingOrders topSellingOrders:orders)
+		{
+			TopSellingOrders top=new TopSellingOrders();
+			
+			top.setCount(topSellingOrders.getCount());
+			top.setItemId(topSellingOrders.getItemId());
+			top.setDate(LocalDate.now());
+			
+			topSellingOrdersRepository.save(top);
+		}
 
 		return orders;
 	}
