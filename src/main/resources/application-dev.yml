@@ -11,12 +11,16 @@ spring:
     password: Password@123
     driver-class-name: org.postgresql.Driver
 
-  jpa:
+  jpa: 
+    generate-ddl: true
     hibernate:
       ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
       hibernate:
-        database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    main:
+      web-application-type: none
 
 swagger:
   url: https://info.eat/infovision
@@ -25,9 +29,7 @@ eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
-#    service-url:
-#      defaultZone: https://service-registry.test.restaurantonesolution.com/eureka/
-  instance:
+    instance:
     hostname: localhost
 
 
