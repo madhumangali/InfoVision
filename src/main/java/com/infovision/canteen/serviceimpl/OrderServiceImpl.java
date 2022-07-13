@@ -2,10 +2,16 @@ package com.infovision.canteen.serviceimpl;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
@@ -125,11 +131,20 @@ public class OrderServiceImpl implements OrderService {
 
 		ModelAndView m = new ModelAndView();
 
-		m = restTemplate
-				.getForObject(
-						"http://localhost:8080/submitPaymentDetail?CUST_ID=" + order.getEmployee().getEmpId().toString()
-								+ "&TXN_AMOUNT=" + s + "&ORDER_ID=" + order.getOrderId().toString(),
-						ModelAndView.class);
+//		m = restTemplate
+//				.getForObject(
+//						"http://localhost:8080/submitPaymentDetail?CUST_ID=" + order.getEmployee().getEmpId().toString()
+//								+ "&TXN_AMOUNT=" + s + "&ORDER_ID=" + order.getOrderId().toString(),
+//						ModelAndView.class);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<ModelAndView> entity = new HttpEntity<ModelAndView>(m, headers);
+
+		restTemplate.exchange(
+				"http://localhost:8080/submitPaymentDetail?CUST_ID=" + order.getEmployee().getEmpId().toString()
+						+ "&TXN_AMOUNT=" + s + "&ORDER_ID=" + order.getOrderId().toString(),
+				HttpMethod.POST, entity, String.class).getBody();
 
 		paymentRepository.save(payment);
 
@@ -180,9 +195,10 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 
 		if (employeeRepository.existsById(empId)) {
-			Employee emp = employeeRepository.getOne(empId);
+			Optional<Employee> emp = employeeRepository.findById(empId);
 
-			List<OrderCartItem> orders = orderCartItemRepository.getByCart(emp.getCart().getCartId());
+			List<OrderCartItem> orders = orderCartItemRepository.getByCart(emp.get().getCart().getCartId());
+//			List<Orders> orders = orderRepository.getOrders(empId);
 
 			if (orders.isEmpty())
 				throw new OrderException("Orders list is empty");
@@ -247,21 +263,17 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Object discounts(UUID itemId, double discount) throws OrderException {
 		// TODO Auto-generated method stub
-		
-		if (restaurantItemRepository.existsById(itemId) ){
-		RestaurantItem restaurantItem=restaurantItemRepository.getOne(itemId);
-		
-		restaurantItem.setDiscount(discount);
-		
-		restaurantItemRepository.save(restaurantItem);
-		}
-		else
+
+		if (restaurantItemRepository.existsById(itemId)) {
+			RestaurantItem restaurantItem = restaurantItemRepository.getOne(itemId);
+
+			restaurantItem.setDiscount(discount);
+
+			restaurantItemRepository.save(restaurantItem);
+		} else
 			throw new OrderException("RestaurantItem not found");
-		
-		
+
 		return null;
 	}
-
-
 
 }

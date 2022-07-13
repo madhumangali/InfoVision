@@ -13,15 +13,15 @@ public interface OrderService {
 
 	String orderItem(OrderDto orderDto) throws OrderException, Exception;
 
-	String cancelOrderItem(UUID orderId)throws OrderException;
+	String cancelOrderItem(UUID orderId) throws OrderException;
 
-	List<OrderCartItem> getEmpOrders(UUID empId)throws OrderException;
+	List<OrderCartItem> getEmpOrders(UUID empId) throws OrderException;
 
-	List<OrderCartItem> getAllOrders()throws OrderException;
+	List<OrderCartItem> getAllOrders() throws OrderException;
 
 	List<OrderCartItem> getRestaurantOrders(UUID restId) throws OrderException;
 
-	List<TopSellingOrders> topSellingOrders()throws OrderException;
+	List<TopSellingOrders> topSellingOrders() throws OrderException;
 
 	Object discounts(UUID itemId, double discount) throws OrderException;
 
