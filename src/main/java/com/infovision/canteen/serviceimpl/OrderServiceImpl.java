@@ -120,7 +120,13 @@ public class OrderServiceImpl implements OrderService {
 
 //		paymentController.getRedirect(orderDto.getEmpId().toString(), s, order.getOrderId().toString());
 		
-//		ModelAndView m=restTemplate.getForObject("http://localhost:8091/")
+//		"http://localhost:8091/paytm/submitPaymentDetail?CUST_ID="+order.getEmployee().getEmpId()+
+//		"&TXN_AMOUNT="+cartRepository.getOne(orderDto.getCartId()).getTotalamount()+"&ORDER_ID="+order.getOrderId()
+		
+		ModelAndView m = new ModelAndView();
+		
+		 m=restTemplate.getForObject("http://localhost:8080/submitPaymentDetail?CUST_ID="+order.getEmployee().getEmpId().toString()+
+				"&TXN_AMOUNT="+s+"&ORDER_ID="+order.getOrderId().toString(), ModelAndView.class);
 
 		paymentRepository.save(payment);
 
